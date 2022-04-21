@@ -227,7 +227,7 @@ int step(lua_State *L) {
 	Input::update(machine_state, input_state);
 
 	if (detectShake()) {
-		IRQ::trigger(cpu, IRQ::IRQ_SHOCK);
+		IRQ::trigger(machine_state, IRQ::IRQ_SHOCK);
 	}
 
 	Machine::advance(machine_state, ticks);

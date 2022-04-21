@@ -1,21 +1,29 @@
 local menu = playdate.getSystemMenu()
 local time = playdate.getCurrentTimeMilliseconds()
 
-function string:split(s, delimiter)
-    result = {};
-    for match in (s..delimiter):gmatch("(.-)"..delimiter) do
+function string:split(delimiter)
+    result = {}
+    for match in (self .. delimiter):gmatch("(.-)" .. delimiter) do
         table.insert(result, match);
     end
-    return result;
+    return result
 end
 
-for i, v in pairs("/rom/bank/":split("/")) do
-    print (i .. ": " .. v)
+function string:join(table)
+    if #table == 0 then
+        return ""
+    end
+
+    local output = table[1]
+    for i = 2, #table do
+        output = output .. self .. tostring(table[i])
+    end
+    return output
 end
 
 --[[
 This should be assigned to playdate.update when you would like the emulator to run freely
-]]--
+]]
 
 function running()
     local now = playdate.getCurrentTimeMilliseconds()
@@ -25,7 +33,7 @@ end
 
 --[[
     This is our loading state
-]]--
+]]
 function load_file()
     local root = "/roms/"
     local files = playdate.file.listFiles(root)
