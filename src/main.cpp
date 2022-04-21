@@ -25,6 +25,7 @@ static const int DISPLAY_ROW_STRIDE = 52;
 static PlaydateAPI* pd = NULL;
 static unsigned int last_time;
 static int power_pressed;
+static bool cart_inserted = false;
 
 static const uint8_t dither[4][4] = {
 	{  15, 195,  60, 240 },
@@ -176,10 +177,23 @@ int reset(lua_State *L) {
 }
 
 int load(lua_State *L) {
+	const char* fn = pd->lua->getArgString(1);
+
+	if (fn == NULL) {
+		// No file name provided, abort
+		return 0;
+	}
+
+	pd->system->logToConsole("LOAD: %s", fn);
+
+	// TODO ACTUALLY LOAD HERE
+
+	cart_inserted = true;
 	return 0;
 }
 
 int eject(lua_State *L) {
+	cart_inserted = false;
 	return 0;
 }
 
@@ -189,7 +203,7 @@ int step(lua_State *L) {
 	unsigned int ticks = ms * OSC3_SPEED / 1000;
 
 	// Update inputs
-	uint16_t input_state = 0b0111111111;
+	uint16_t input_state = 0b1111111111;
 	PDButtons pushed;
 	pd->system->getButtonState(&pushed, NULL, NULL);
 
@@ -200,11 +214,14 @@ int step(lua_State *L) {
 	if (pushed & kButtonDown)  input_state &= ~0b00010000;
 	if (pushed & kButtonLeft)  input_state &= ~0b00100000;
 	if (pushed & kButtonRight) input_state &= ~0b01000000;
-	
+
 	if (power_pressed > 0) {
 		input_state &= ~0b10000000;
 		power_pressed -= ms;
 	}
+
+	if (cart_inserted) input_state &= ~0b1000000000;
+
 	Input::update(machine_state, input_state);
 
 	detectShake();
@@ -252,6 +269,6 @@ int eventHandler(PlaydateAPI* playdate, PDSystemEvent event, uint32_t arg)
 	default:
 		break  ;
 	}
-	
+
 	return 0;
 }
