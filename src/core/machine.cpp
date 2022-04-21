@@ -60,14 +60,31 @@ extern "C" void set_sample_rate(int rate) {
 }
 
 extern "C" int get_audio_samples(int16_t* samples, int len) {
-	if (machine_state.audio.write_index < len) {
+	static int read_index = 0;
+	int write_index = machine_state.audio.write_index;
+
+	// Determine how many frames are in our audio buffer
+	int frames = write_index - read_index;
+	if (frames < 0) frames += AUDIO_BUFFER_LENGTH;
+
+	// Not enough, return
+	if (frames < len) {
 		return 0;
 	}
 
-	memcpy(samples, machine_state.audio.output, len*sizeof(int16_t));
-	memcpy(machine_state.audio.output, 
-		&machine_state.audio.output[machine_state.audio.write_index], (machine_state.audio.write_index - len) * sizeof(int16_t));
-	machine_state.audio.write_index -= len;
+	if (read_index + len > AUDIO_BUFFER_LENGTH) {
+		// We need to split the copy
+		int top = AUDIO_BUFFER_LENGTH - write_index;
+		int bottom = len - top;
+
+		memcpy(samples, &machine_state.audio.output[read_index], top);
+		memcpy(samples, &machine_state.audio.output[0], bottom);
+	} else {
+		// Simple copy
+		memcpy(samples, &machine_state.audio.output[read_index], len);
+	}
+
+	read_index = (read_index + len) % AUDIO_BUFFER_LENGTH;
 
 	return 1;
 }
