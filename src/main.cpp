@@ -161,10 +161,12 @@ static void preserve(void) {
 	}
 }
 
-static void detectShake(void) {
+static bool detectShake(void) {
 	float x, y, z;
 	pd->system->getAccelerometer(&x,&y,&z);
-	pd->system->logToConsole("%f %f %f", x, y, z);
+
+	// TODO: determine shake
+	return false;
 }
 
 static void pressPower(void* userdata) {
@@ -224,7 +226,10 @@ int step(lua_State *L) {
 
 	Input::update(machine_state, input_state);
 
-	detectShake();
+	if (detectShake()) {
+		IRQ::trigger(cpu, IRQ::IRQ_SHOCK);
+	}
+
 	Machine::advance(machine_state, ticks);
 
 	return 0;
@@ -250,13 +255,13 @@ int eventHandler(PlaydateAPI* playdate, PDSystemEvent event, uint32_t arg)
 		const char* err;
 
 		pd->lua->addFunction(step, "minimon.step", &err);
-		if (err) pd->system->error("Cannot add function: %s", err);
+		if (*err) pd->system->error("Cannot add function: %s", err);
 		pd->lua->addFunction(reset, "minimon.reset", &err);
-		if (err) pd->system->error("Cannot add function: %s", err);
+		if (*err) pd->system->error("Cannot add function: %s", err);
 		pd->lua->addFunction(load, "minimon.load", &err);
-		if (err) pd->system->error("Cannot add function: %s", err);
+		if (*err) pd->system->error("Cannot add function: %s", err);
 		pd->lua->addFunction(eject, "minimon.eject", &err);
-		if (err) pd->system->error("Cannot add function: %s", err);
+		if (*err) pd->system->error("Cannot add function: %s", err);
 
 		break;
 
