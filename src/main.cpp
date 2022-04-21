@@ -139,20 +139,7 @@ static void initialize(void)
 	pd->file->read(fd, machine_state.BIOS, sizeof(machine_state.BIOS));
 	pd->file->close(fd);
 
-
-	// Load a game
-	fd = pd->file->open("game.min", kFileRead);
-	if (fd != NULL) {
-		pd->file->read(fd, machine_state.cartridge, 0x200000);
-		pd->file->close(fd);
-	}
-
-	fd = pd->file->open("game.min", kFileRead);
-	if (fd != NULL) {
-		pd->file->read(fd, machine_state.cartridge, 0x200000);
-		pd->file->close(fd);
-	}
-
+	// Restore EEPROM
 	fd = pd->file->open("eeprom.bin", kFileReadData);
 	if (fd != NULL) {
 		pd->file->read(fd, machine_state.gpio.eeprom.data, 0x2000);
@@ -183,12 +170,23 @@ static void pressPower(void* userdata) {
 	power_pressed = 100;
 }
 
-static int update(void* ud)
-{
+int reset(lua_State *L) {
+	Machine::reset(machine_state);
+	return 0;
+}
+
+int load(lua_State *L) {
+	return 0;
+}
+
+int eject(lua_State *L) {
+	return 0;
+}
+
+int step(lua_State *L) {
 	// Calculate elapsed time
-	unsigned int now = pd->system->getCurrentTimeMilliseconds();
-	unsigned int ticks = (now - last_time) * OSC3_SPEED / 1000;
-	last_time = now;
+	unsigned int ms = pd->lua->getArgInt(1);
+	unsigned int ticks = ms * OSC3_SPEED / 1000;
 
 	// Update inputs
 	uint16_t input_state = 0b0111111111;
@@ -205,14 +203,14 @@ static int update(void* ud)
 	
 	if (power_pressed > 0) {
 		input_state &= ~0b10000000;
-		power_pressed -= (now - last_time);
+		power_pressed -= ms;
 	}
 	Input::update(machine_state, input_state);
 
 	detectShake();
 	Machine::advance(machine_state, ticks);
 
-	return 1;
+	return 0;
 }
 
 #ifdef _WINDLL
@@ -224,20 +222,35 @@ int eventHandler(PlaydateAPI* playdate, PDSystemEvent event, uint32_t arg)
 	case kEventInit:
 		pd = playdate;
 		pd->display->setRefreshRate(0); // run as fast as possible
-		pd->system->setUpdateCallback(update, NULL);
 		pd->system->setPeripheralsEnabled(kAccelerometer);
 		pd->system->addMenuItem("Press Power", pressPower, NULL);
-		
 		pd->sound->addSource(audioSource, NULL, 0);
+
 		initialize();
-		preserve();
+		break ;
+
+	case kEventInitLua:
+		const char* err;
+
+		pd->lua->addFunction(step, "minimon.step", &err);
+		if (err) pd->system->error("Cannot add function: %s", err);
+		pd->lua->addFunction(reset, "minimon.reset", &err);
+		if (err) pd->system->error("Cannot add function: %s", err);
+		pd->lua->addFunction(load, "minimon.load", &err);
+		if (err) pd->system->error("Cannot add function: %s", err);
+		pd->lua->addFunction(eject, "minimon.eject", &err);
+		if (err) pd->system->error("Cannot add function: %s", err);
 
 		break;
+
 	case kEventTerminate:
 	case kEventPause:
 	case kEventLowPower:
 		preserve();
-		break;
+		break ;
+
+	default:
+		break  ;
 	}
 	
 	return 0;
