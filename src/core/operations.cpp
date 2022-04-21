@@ -25,15 +25,15 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  **/
 
 static inline uint32_t calc_vect(Machine::State& cpu) {
-	return cpu_imm8(cpu);
+	return Machine::imm8(cpu);
 }
 
 static inline uint32_t calc_ind16(Machine::State& cpu) {
-	return (cpu.reg.ep << 16) | cpu_imm16(cpu);
+	return (cpu.reg.ep << 16) | Machine::imm16(cpu);
 }
 
 static inline uint32_t calc_absBR(Machine::State& cpu) {
-	return (cpu.reg.ep << 16) | (cpu.reg.br << 8) | cpu_imm8(cpu);
+	return (cpu.reg.ep << 16) | (cpu.reg.br << 8) | Machine::imm8(cpu);
 }
 
 static inline uint32_t calc_absHL(Machine::State& cpu) {
@@ -49,15 +49,15 @@ static inline uint32_t calc_absIY(Machine::State& cpu) {
 }
 
 static inline uint32_t calc_indDSP(Machine::State& cpu) {
-	return (cpu.reg.sp + (int8_t)cpu_imm8(cpu)) & 0xFFFF;
+	return (cpu.reg.sp + (int8_t)Machine::imm8(cpu)) & 0xFFFF;
 }
 
 static inline uint32_t calc_indDIX(Machine::State& cpu) {
-	return (cpu.reg.xp << 16) | ((cpu.reg.ix + (int8_t)cpu_imm8(cpu)) & 0xFFFF);
+	return (cpu.reg.xp << 16) | ((cpu.reg.ix + (int8_t)Machine::imm8(cpu)) & 0xFFFF);
 }
 
 static inline uint32_t calc_indDIY(Machine::State& cpu) {
-	return (cpu.reg.yp << 16) | ((cpu.reg.iy + (int8_t)cpu_imm8(cpu)) & 0xFFFF);
+	return (cpu.reg.yp << 16) | ((cpu.reg.iy + (int8_t)Machine::imm8(cpu)) & 0xFFFF);
 }
 
 static inline uint32_t calc_indIIX(Machine::State& cpu) {
@@ -419,24 +419,24 @@ static inline void op_srl8(Machine::State& cpu, uint8_t& t) {
  **/
 
 static inline void op_push8(Machine::State& cpu, uint8_t t) {
-	cpu_push8(cpu, t);
+	Machine::push8(cpu, t);
 }
 
 static inline void op_push16(Machine::State& cpu, uint16_t t) {
-	cpu_push16(cpu, t);
+	Machine::push16(cpu, t);
 }
 
 static inline void inst_push_ip(Machine::State& cpu) {
-	cpu_push8(cpu, cpu.reg.xp);
-	cpu_push8(cpu, cpu.reg.yp);
+	Machine::push8(cpu, cpu.reg.xp);
+	Machine::push8(cpu, cpu.reg.yp);
 }
 
 static inline void inst_push_all(Machine::State& cpu) {
-	cpu_push16(cpu, cpu.reg.ba);
-	cpu_push16(cpu, cpu.reg.hl);
-	cpu_push16(cpu, cpu.reg.ix);
-	cpu_push16(cpu, cpu.reg.iy);
-	cpu_push8(cpu, cpu.reg.br);
+	Machine::push16(cpu, cpu.reg.ba);
+	Machine::push16(cpu, cpu.reg.hl);
+	Machine::push16(cpu, cpu.reg.ix);
+	Machine::push16(cpu, cpu.reg.iy);
+	Machine::push8(cpu, cpu.reg.br);
 }
 
 static inline void inst_push_ale(Machine::State& cpu) {
@@ -446,29 +446,29 @@ static inline void inst_push_ale(Machine::State& cpu) {
 }
 
 static inline void op_pop8(Machine::State& cpu, uint8_t& t) {
-	t = cpu_pop8(cpu);
+	t = Machine::pop8(cpu);
 }
 
 static inline void op_pop16(Machine::State& cpu, uint16_t& t) {
-	t = cpu_pop16(cpu);
+	t = Machine::pop16(cpu);
 }
 
 static inline void inst_pop_ip(Machine::State& cpu) {
-	cpu.reg.yp = cpu_pop8(cpu);
-	cpu.reg.xp = cpu_pop8(cpu);
+	cpu.reg.yp = Machine::pop8(cpu);
+	cpu.reg.xp = Machine::pop8(cpu);
 }
 
 static inline void inst_pop_all(Machine::State& cpu) {
-	cpu.reg.br = cpu_pop8(cpu);
-	cpu.reg.iy = cpu_pop16(cpu);
-	cpu.reg.ix = cpu_pop16(cpu);
-	cpu.reg.hl = cpu_pop16(cpu);
-	cpu.reg.ba = cpu_pop16(cpu);
+	cpu.reg.br = Machine::pop8(cpu);
+	cpu.reg.iy = Machine::pop16(cpu);
+	cpu.reg.ix = Machine::pop16(cpu);
+	cpu.reg.hl = Machine::pop16(cpu);
+	cpu.reg.ba = Machine::pop16(cpu);
 }
 
 static inline void inst_pop_ale(Machine::State& cpu) {
 	inst_pop_ip(cpu);
-	cpu.reg.ep = cpu_pop8(cpu);
+	cpu.reg.ep = Machine::pop8(cpu);
 	inst_pop_all(cpu);
 }
 
@@ -487,7 +487,7 @@ static inline void op_jrl16(Machine::State& cpu, uint16_t t) {
 }
 
 static inline void inst_djr_nz_rr(Machine::State& cpu) {
-	int8_t off = cpu_imm8(cpu);
+	int8_t off = Machine::imm8(cpu);
 
 	cpu.reg.flag.z = 0 == --cpu.reg.b;
 	if (!cpu.reg.flag.z) {
@@ -502,52 +502,52 @@ static inline void op_jp16(Machine::State& cpu, uint16_t t) {
 }
 
 static inline void op_cars8(Machine::State& cpu, uint8_t t) {
-	cpu_push8(cpu, cpu.reg.cb);
-	cpu_push16(cpu, cpu.reg.pc);
+	Machine::push8(cpu, cpu.reg.cb);
+	Machine::push16(cpu, cpu.reg.pc);
 
 	cpu.reg.pc += (int8_t)t - 1;
 	cpu.reg.cb = cpu.reg.nb;
 }
 
 static inline void op_carl16(Machine::State& cpu, uint16_t t) {
-	cpu_push8(cpu, cpu.reg.cb);
-	cpu_push16(cpu, cpu.reg.pc);
+	Machine::push8(cpu, cpu.reg.cb);
+	Machine::push16(cpu, cpu.reg.pc);
 
 	cpu.reg.pc += t - 1;
 	cpu.reg.cb = cpu.reg.nb;
 }
 
 static inline void op_call16(Machine::State& cpu, uint16_t t) {
-	cpu_push8(cpu, cpu.reg.cb);
-	cpu_push16(cpu, cpu.reg.pc);
+	Machine::push8(cpu, cpu.reg.cb);
+	Machine::push16(cpu, cpu.reg.pc);
 
 	cpu.reg.pc = t;
 	cpu.reg.cb = cpu.reg.nb;
 }
 
 static inline void op_int16(Machine::State& cpu, uint16_t t) {
-	cpu_push8(cpu, cpu.reg.cb);
-	cpu_push16(cpu, cpu.reg.pc);
-	cpu_push8(cpu, cpu.reg.sc);
+	Machine::push8(cpu, cpu.reg.cb);
+	Machine::push16(cpu, cpu.reg.pc);
+	Machine::push8(cpu, cpu.reg.sc);
 
 	cpu.reg.pc = t;
 	cpu.reg.cb = cpu.reg.nb;
 }
 
 static inline void inst_ret(Machine::State& cpu) {
-	cpu.reg.pc = cpu_pop16(cpu);
-	cpu.reg.nb = cpu.reg.cb = cpu_pop8(cpu);
+	cpu.reg.pc = Machine::pop16(cpu);
+	cpu.reg.nb = cpu.reg.cb = Machine::pop8(cpu);
 }
 
 static inline void op_rete8(Machine::State& cpu) {
-	cpu.reg.sc = cpu_pop8(cpu);
-	cpu.reg.pc = cpu_pop16(cpu);
-	cpu.reg.nb = cpu.reg.cb = cpu_pop8(cpu);
+	cpu.reg.sc = Machine::pop8(cpu);
+	cpu.reg.pc = Machine::pop16(cpu);
+	cpu.reg.nb = cpu.reg.cb = Machine::pop8(cpu);
 }
 
 static inline void inst_rets(Machine::State& cpu) {
-	cpu.reg.pc = cpu_pop16(cpu);
-	cpu.reg.nb = cpu.reg.cb = cpu_pop8(cpu);
+	cpu.reg.pc = Machine::pop16(cpu);
+	cpu.reg.nb = cpu.reg.cb = Machine::pop8(cpu);
 	cpu.reg.pc += 2;
 }
 

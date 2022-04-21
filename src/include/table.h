@@ -5,7 +5,7 @@ static int inst_add_a_a(Machine::State& cpu) {
 
 static int inst_add_a_inddix(Machine::State& cpu) {
 	const auto addr1 = calc_indDIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_add8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -22,7 +22,7 @@ static int inst_add_a_b(Machine::State& cpu) {
 
 static int inst_add_a_inddiy(Machine::State& cpu) {
 	const auto addr1 = calc_indDIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_add8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -33,14 +33,14 @@ static int inst_add_ba_hl(Machine::State& cpu) {
 }
 
 static int inst_add_a_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_add8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_add_a_indiix(Machine::State& cpu) {
 	const auto addr1 = calc_indIIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_add8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -52,14 +52,14 @@ static int inst_add_ba_ix(Machine::State& cpu) {
 
 static int inst_add_a_abshl(Machine::State& cpu) {
 	const auto addr1 = calc_absHL(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_add8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_add_a_indiiy(Machine::State& cpu) {
 	const auto addr1 = calc_indIIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_add8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -71,16 +71,16 @@ static int inst_add_ba_iy(Machine::State& cpu) {
 
 static int inst_add_a_absbr(Machine::State& cpu) {
 	const auto addr1 = calc_absBR(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_add8(cpu, cpu.reg.a, data1);
 	return 3;
 }
 
 static int inst_add_abshl_a(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_add8(cpu, data0, cpu.reg.a);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -91,17 +91,17 @@ static int inst_adc_ba_ba(Machine::State& cpu) {
 
 static int inst_add_a_ind16(Machine::State& cpu) {
 	const auto addr1 = calc_ind16(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_add8(cpu, cpu.reg.a, data1);
 	return 4;
 }
 
 static int inst_add_abshl_imm8(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
-	const uint8_t data1 = cpu_imm8(cpu);
+	uint8_t data0 = Machine::read8(cpu, addr0);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_add8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -112,18 +112,18 @@ static int inst_adc_ba_hl(Machine::State& cpu) {
 
 static int inst_add_a_absix(Machine::State& cpu) {
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_add8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_add_abshl_absix(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_add8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -134,18 +134,18 @@ static int inst_adc_ba_ix(Machine::State& cpu) {
 
 static int inst_add_a_absiy(Machine::State& cpu) {
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_add8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_add_abshl_absiy(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_add8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -161,7 +161,7 @@ static int inst_adc_a_a(Machine::State& cpu) {
 
 static int inst_adc_a_inddix(Machine::State& cpu) {
 	const auto addr1 = calc_indDIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_adc8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -178,7 +178,7 @@ static int inst_adc_a_b(Machine::State& cpu) {
 
 static int inst_adc_a_inddiy(Machine::State& cpu) {
 	const auto addr1 = calc_indDIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_adc8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -189,14 +189,14 @@ static int inst_sub_ba_hl(Machine::State& cpu) {
 }
 
 static int inst_adc_a_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_adc8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_adc_a_indiix(Machine::State& cpu) {
 	const auto addr1 = calc_indIIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_adc8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -208,14 +208,14 @@ static int inst_sub_ba_ix(Machine::State& cpu) {
 
 static int inst_adc_a_abshl(Machine::State& cpu) {
 	const auto addr1 = calc_absHL(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_adc8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_adc_a_indiiy(Machine::State& cpu) {
 	const auto addr1 = calc_indIIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_adc8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -227,16 +227,16 @@ static int inst_sub_ba_iy(Machine::State& cpu) {
 
 static int inst_adc_a_absbr(Machine::State& cpu) {
 	const auto addr1 = calc_absBR(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_adc8(cpu, cpu.reg.a, data1);
 	return 3;
 }
 
 static int inst_adc_abshl_a(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_adc8(cpu, data0, cpu.reg.a);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -247,17 +247,17 @@ static int inst_sbc_ba_ba(Machine::State& cpu) {
 
 static int inst_adc_a_ind16(Machine::State& cpu) {
 	const auto addr1 = calc_ind16(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_adc8(cpu, cpu.reg.a, data1);
 	return 4;
 }
 
 static int inst_adc_abshl_imm8(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
-	const uint8_t data1 = cpu_imm8(cpu);
+	uint8_t data0 = Machine::read8(cpu, addr0);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_adc8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -268,18 +268,18 @@ static int inst_sbc_ba_hl(Machine::State& cpu) {
 
 static int inst_adc_a_absix(Machine::State& cpu) {
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_adc8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_adc_abshl_absix(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_adc8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -290,18 +290,18 @@ static int inst_sbc_ba_ix(Machine::State& cpu) {
 
 static int inst_adc_a_absiy(Machine::State& cpu) {
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_adc8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_adc_abshl_absiy(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_adc8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -317,7 +317,7 @@ static int inst_sub_a_a(Machine::State& cpu) {
 
 static int inst_sub_a_inddix(Machine::State& cpu) {
 	const auto addr1 = calc_indDIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sub8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -329,100 +329,100 @@ static int inst_sub_a_b(Machine::State& cpu) {
 
 static int inst_sub_a_inddiy(Machine::State& cpu) {
 	const auto addr1 = calc_indDIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sub8(cpu, cpu.reg.a, data1);
 	return 4;
 }
 
 static int inst_sub_a_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_sub8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_sub_a_indiix(Machine::State& cpu) {
 	const auto addr1 = calc_indIIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sub8(cpu, cpu.reg.a, data1);
 	return 4;
 }
 
 static int inst_sub_a_abshl(Machine::State& cpu) {
 	const auto addr1 = calc_absHL(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sub8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_sub_a_indiiy(Machine::State& cpu) {
 	const auto addr1 = calc_indIIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sub8(cpu, cpu.reg.a, data1);
 	return 4;
 }
 
 static int inst_sub_a_absbr(Machine::State& cpu) {
 	const auto addr1 = calc_absBR(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sub8(cpu, cpu.reg.a, data1);
 	return 3;
 }
 
 static int inst_sub_abshl_a(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_sub8(cpu, data0, cpu.reg.a);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
 static int inst_sub_a_ind16(Machine::State& cpu) {
 	const auto addr1 = calc_ind16(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sub8(cpu, cpu.reg.a, data1);
 	return 4;
 }
 
 static int inst_sub_abshl_imm8(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
-	const uint8_t data1 = cpu_imm8(cpu);
+	uint8_t data0 = Machine::read8(cpu, addr0);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_sub8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_sub_a_absix(Machine::State& cpu) {
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sub8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_sub_abshl_absix(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sub8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_sub_a_absiy(Machine::State& cpu) {
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sub8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_sub_abshl_absiy(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sub8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -433,7 +433,7 @@ static int inst_sbc_a_a(Machine::State& cpu) {
 
 static int inst_sbc_a_inddix(Machine::State& cpu) {
 	const auto addr1 = calc_indDIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sbc8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -450,7 +450,7 @@ static int inst_sbc_a_b(Machine::State& cpu) {
 
 static int inst_sbc_a_inddiy(Machine::State& cpu) {
 	const auto addr1 = calc_indDIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sbc8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -461,14 +461,14 @@ static int inst_cp_ba_hl(Machine::State& cpu) {
 }
 
 static int inst_sbc_a_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_sbc8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_sbc_a_indiix(Machine::State& cpu) {
 	const auto addr1 = calc_indIIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sbc8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -480,14 +480,14 @@ static int inst_cp_ba_ix(Machine::State& cpu) {
 
 static int inst_sbc_a_abshl(Machine::State& cpu) {
 	const auto addr1 = calc_absHL(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sbc8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_sbc_a_indiiy(Machine::State& cpu) {
 	const auto addr1 = calc_indIIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sbc8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -499,66 +499,66 @@ static int inst_cp_ba_iy(Machine::State& cpu) {
 
 static int inst_sbc_a_absbr(Machine::State& cpu) {
 	const auto addr1 = calc_absBR(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sbc8(cpu, cpu.reg.a, data1);
 	return 3;
 }
 
 static int inst_sbc_abshl_a(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_sbc8(cpu, data0, cpu.reg.a);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
 static int inst_sbc_a_ind16(Machine::State& cpu) {
 	const auto addr1 = calc_ind16(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sbc8(cpu, cpu.reg.a, data1);
 	return 4;
 }
 
 static int inst_sbc_abshl_imm8(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
-	const uint8_t data1 = cpu_imm8(cpu);
+	uint8_t data0 = Machine::read8(cpu, addr0);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_sbc8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_sbc_a_absix(Machine::State& cpu) {
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sbc8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_sbc_abshl_absix(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sbc8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_sbc_a_absiy(Machine::State& cpu) {
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sbc8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_sbc_abshl_absiy(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_sbc8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -569,7 +569,7 @@ static int inst_and_a_a(Machine::State& cpu) {
 
 static int inst_and_a_inddix(Machine::State& cpu) {
 	const auto addr1 = calc_indDIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_and8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -586,7 +586,7 @@ static int inst_and_a_b(Machine::State& cpu) {
 
 static int inst_and_a_inddiy(Machine::State& cpu) {
 	const auto addr1 = calc_indDIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_and8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -597,14 +597,14 @@ static int inst_add_hl_hl(Machine::State& cpu) {
 }
 
 static int inst_and_a_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_and8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_and_a_indiix(Machine::State& cpu) {
 	const auto addr1 = calc_indIIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_and8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -616,14 +616,14 @@ static int inst_add_hl_ix(Machine::State& cpu) {
 
 static int inst_and_a_abshl(Machine::State& cpu) {
 	const auto addr1 = calc_absHL(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_and8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_and_a_indiiy(Machine::State& cpu) {
 	const auto addr1 = calc_indIIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_and8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -635,16 +635,16 @@ static int inst_add_hl_iy(Machine::State& cpu) {
 
 static int inst_and_a_absbr(Machine::State& cpu) {
 	const auto addr1 = calc_absBR(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_and8(cpu, cpu.reg.a, data1);
 	return 3;
 }
 
 static int inst_and_abshl_a(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_and8(cpu, data0, cpu.reg.a);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -655,17 +655,17 @@ static int inst_adc_hl_ba(Machine::State& cpu) {
 
 static int inst_and_a_ind16(Machine::State& cpu) {
 	const auto addr1 = calc_ind16(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_and8(cpu, cpu.reg.a, data1);
 	return 4;
 }
 
 static int inst_and_abshl_imm8(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
-	const uint8_t data1 = cpu_imm8(cpu);
+	uint8_t data0 = Machine::read8(cpu, addr0);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_and8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -676,18 +676,18 @@ static int inst_adc_hl_hl(Machine::State& cpu) {
 
 static int inst_and_a_absix(Machine::State& cpu) {
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_and8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_and_abshl_absix(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_and8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -698,18 +698,18 @@ static int inst_adc_hl_ix(Machine::State& cpu) {
 
 static int inst_and_a_absiy(Machine::State& cpu) {
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_and8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_and_abshl_absiy(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_and8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -725,7 +725,7 @@ static int inst_or_a_a(Machine::State& cpu) {
 
 static int inst_or_a_inddix(Machine::State& cpu) {
 	const auto addr1 = calc_indDIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_or8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -742,7 +742,7 @@ static int inst_or_a_b(Machine::State& cpu) {
 
 static int inst_or_a_inddiy(Machine::State& cpu) {
 	const auto addr1 = calc_indDIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_or8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -753,14 +753,14 @@ static int inst_sub_hl_hl(Machine::State& cpu) {
 }
 
 static int inst_or_a_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_or8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_or_a_indiix(Machine::State& cpu) {
 	const auto addr1 = calc_indIIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_or8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -772,14 +772,14 @@ static int inst_sub_hl_ix(Machine::State& cpu) {
 
 static int inst_or_a_abshl(Machine::State& cpu) {
 	const auto addr1 = calc_absHL(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_or8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_or_a_indiiy(Machine::State& cpu) {
 	const auto addr1 = calc_indIIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_or8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -791,16 +791,16 @@ static int inst_sub_hl_iy(Machine::State& cpu) {
 
 static int inst_or_a_absbr(Machine::State& cpu) {
 	const auto addr1 = calc_absBR(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_or8(cpu, cpu.reg.a, data1);
 	return 3;
 }
 
 static int inst_or_abshl_a(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_or8(cpu, data0, cpu.reg.a);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -811,17 +811,17 @@ static int inst_sbc_hl_ba(Machine::State& cpu) {
 
 static int inst_or_a_ind16(Machine::State& cpu) {
 	const auto addr1 = calc_ind16(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_or8(cpu, cpu.reg.a, data1);
 	return 4;
 }
 
 static int inst_or_abshl_imm8(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
-	const uint8_t data1 = cpu_imm8(cpu);
+	uint8_t data0 = Machine::read8(cpu, addr0);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_or8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -832,18 +832,18 @@ static int inst_sbc_hl_hl(Machine::State& cpu) {
 
 static int inst_or_a_absix(Machine::State& cpu) {
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_or8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_or_abshl_absix(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_or8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -854,18 +854,18 @@ static int inst_sbc_hl_ix(Machine::State& cpu) {
 
 static int inst_or_a_absiy(Machine::State& cpu) {
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_or8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_or_abshl_absiy(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_or8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -881,7 +881,7 @@ static int inst_cp_a_a(Machine::State& cpu) {
 
 static int inst_cp_a_inddix(Machine::State& cpu) {
 	const auto addr1 = calc_indDIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_cp8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -893,95 +893,95 @@ static int inst_cp_a_b(Machine::State& cpu) {
 
 static int inst_cp_a_inddiy(Machine::State& cpu) {
 	const auto addr1 = calc_indDIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_cp8(cpu, cpu.reg.a, data1);
 	return 4;
 }
 
 static int inst_cp_a_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_cp8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_cp_a_indiix(Machine::State& cpu) {
 	const auto addr1 = calc_indIIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_cp8(cpu, cpu.reg.a, data1);
 	return 4;
 }
 
 static int inst_cp_a_abshl(Machine::State& cpu) {
 	const auto addr1 = calc_absHL(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_cp8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_cp_a_indiiy(Machine::State& cpu) {
 	const auto addr1 = calc_indIIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_cp8(cpu, cpu.reg.a, data1);
 	return 4;
 }
 
 static int inst_cp_a_absbr(Machine::State& cpu) {
 	const auto addr1 = calc_absBR(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_cp8(cpu, cpu.reg.a, data1);
 	return 3;
 }
 
 static int inst_cp_abshl_a(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	const uint8_t data0 = cpu_read8(cpu, addr0);
+	const uint8_t data0 = Machine::read8(cpu, addr0);
 	op_cp8(cpu, data0, cpu.reg.a);
 	return 3;
 }
 
 static int inst_cp_a_ind16(Machine::State& cpu) {
 	const auto addr1 = calc_ind16(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_cp8(cpu, cpu.reg.a, data1);
 	return 4;
 }
 
 static int inst_cp_abshl_imm8(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	const uint8_t data0 = cpu_read8(cpu, addr0);
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::read8(cpu, addr0);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_cp8(cpu, data0, data1);
 	return 4;
 }
 
 static int inst_cp_a_absix(Machine::State& cpu) {
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_cp8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_cp_abshl_absix(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	const uint8_t data0 = cpu_read8(cpu, addr0);
+	const uint8_t data0 = Machine::read8(cpu, addr0);
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_cp8(cpu, data0, data1);
 	return 4;
 }
 
 static int inst_cp_a_absiy(Machine::State& cpu) {
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_cp8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_cp_abshl_absiy(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	const uint8_t data0 = cpu_read8(cpu, addr0);
+	const uint8_t data0 = Machine::read8(cpu, addr0);
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_cp8(cpu, data0, data1);
 	return 4;
 }
@@ -993,7 +993,7 @@ static int inst_xor_a_a(Machine::State& cpu) {
 
 static int inst_xor_a_inddix(Machine::State& cpu) {
 	const auto addr1 = calc_indDIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_xor8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -1010,7 +1010,7 @@ static int inst_xor_a_b(Machine::State& cpu) {
 
 static int inst_xor_a_inddiy(Machine::State& cpu) {
 	const auto addr1 = calc_indDIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_xor8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -1021,14 +1021,14 @@ static int inst_cp_hl_hl(Machine::State& cpu) {
 }
 
 static int inst_xor_a_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_xor8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_xor_a_indiix(Machine::State& cpu) {
 	const auto addr1 = calc_indIIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_xor8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -1040,14 +1040,14 @@ static int inst_cp_hl_ix(Machine::State& cpu) {
 
 static int inst_xor_a_abshl(Machine::State& cpu) {
 	const auto addr1 = calc_absHL(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_xor8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_xor_a_indiiy(Machine::State& cpu) {
 	const auto addr1 = calc_indIIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_xor8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -1059,66 +1059,66 @@ static int inst_cp_hl_iy(Machine::State& cpu) {
 
 static int inst_xor_a_absbr(Machine::State& cpu) {
 	const auto addr1 = calc_absBR(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_xor8(cpu, cpu.reg.a, data1);
 	return 3;
 }
 
 static int inst_xor_abshl_a(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_xor8(cpu, data0, cpu.reg.a);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
 static int inst_xor_a_ind16(Machine::State& cpu) {
 	const auto addr1 = calc_ind16(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_xor8(cpu, cpu.reg.a, data1);
 	return 4;
 }
 
 static int inst_xor_abshl_imm8(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
-	const uint8_t data1 = cpu_imm8(cpu);
+	uint8_t data0 = Machine::read8(cpu, addr0);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_xor8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_xor_a_absix(Machine::State& cpu) {
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_xor8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_xor_abshl_absix(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_xor8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_xor_a_absiy(Machine::State& cpu) {
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_xor8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_xor_abshl_absiy(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_xor8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -1129,7 +1129,7 @@ static int inst_ld_a_a(Machine::State& cpu) {
 
 static int inst_ld_a_inddix(Machine::State& cpu) {
 	const auto addr1 = calc_indDIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -1146,7 +1146,7 @@ static int inst_ld_a_b(Machine::State& cpu) {
 
 static int inst_ld_a_inddiy(Machine::State& cpu) {
 	const auto addr1 = calc_indDIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -1163,7 +1163,7 @@ static int inst_ld_a_l(Machine::State& cpu) {
 
 static int inst_ld_a_indiix(Machine::State& cpu) {
 	const auto addr1 = calc_indIIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -1180,7 +1180,7 @@ static int inst_ld_a_h(Machine::State& cpu) {
 
 static int inst_ld_a_indiiy(Machine::State& cpu) {
 	const auto addr1 = calc_indIIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.a, data1);
 	return 4;
 }
@@ -1192,7 +1192,7 @@ static int inst_add_iy_hl(Machine::State& cpu) {
 
 static int inst_ld_a_absbr(Machine::State& cpu) {
 	const auto addr1 = calc_absBR(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.a, data1);
 	return 3;
 }
@@ -1201,7 +1201,7 @@ static int inst_ld_inddix_a(Machine::State& cpu) {
 	const auto addr0 = calc_indDIX(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.a);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -1212,7 +1212,7 @@ static int inst_add_sp_ba(Machine::State& cpu) {
 
 static int inst_ld_a_abshl(Machine::State& cpu) {
 	const auto addr1 = calc_absHL(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.a, data1);
 	return 2;
 }
@@ -1221,7 +1221,7 @@ static int inst_ld_inddiy_a(Machine::State& cpu) {
 	const auto addr0 = calc_indDIY(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.a);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -1232,7 +1232,7 @@ static int inst_add_sp_hl(Machine::State& cpu) {
 
 static int inst_ld_a_absix(Machine::State& cpu) {
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.a, data1);
 	return 2;
 }
@@ -1241,13 +1241,13 @@ static int inst_ld_indiix_a(Machine::State& cpu) {
 	const auto addr0 = calc_indIIX(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.a);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
 static int inst_ld_a_absiy(Machine::State& cpu) {
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.a, data1);
 	return 2;
 }
@@ -1256,7 +1256,7 @@ static int inst_ld_indiiy_a(Machine::State& cpu) {
 	const auto addr0 = calc_indIIY(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.a);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -1267,7 +1267,7 @@ static int inst_ld_b_a(Machine::State& cpu) {
 
 static int inst_ld_b_inddix(Machine::State& cpu) {
 	const auto addr1 = calc_indDIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.b, data1);
 	return 4;
 }
@@ -1284,7 +1284,7 @@ static int inst_ld_b_b(Machine::State& cpu) {
 
 static int inst_ld_b_inddiy(Machine::State& cpu) {
 	const auto addr1 = calc_indDIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.b, data1);
 	return 4;
 }
@@ -1301,7 +1301,7 @@ static int inst_ld_b_l(Machine::State& cpu) {
 
 static int inst_ld_b_indiix(Machine::State& cpu) {
 	const auto addr1 = calc_indIIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.b, data1);
 	return 4;
 }
@@ -1318,7 +1318,7 @@ static int inst_ld_b_h(Machine::State& cpu) {
 
 static int inst_ld_b_indiiy(Machine::State& cpu) {
 	const auto addr1 = calc_indIIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.b, data1);
 	return 4;
 }
@@ -1330,7 +1330,7 @@ static int inst_sub_iy_hl(Machine::State& cpu) {
 
 static int inst_ld_b_absbr(Machine::State& cpu) {
 	const auto addr1 = calc_absBR(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.b, data1);
 	return 3;
 }
@@ -1339,7 +1339,7 @@ static int inst_ld_inddix_b(Machine::State& cpu) {
 	const auto addr0 = calc_indDIX(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.b);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -1350,7 +1350,7 @@ static int inst_sub_sp_ba(Machine::State& cpu) {
 
 static int inst_ld_b_abshl(Machine::State& cpu) {
 	const auto addr1 = calc_absHL(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.b, data1);
 	return 2;
 }
@@ -1359,7 +1359,7 @@ static int inst_ld_inddiy_b(Machine::State& cpu) {
 	const auto addr0 = calc_indDIY(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.b);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -1370,7 +1370,7 @@ static int inst_sub_sp_hl(Machine::State& cpu) {
 
 static int inst_ld_b_absix(Machine::State& cpu) {
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.b, data1);
 	return 2;
 }
@@ -1379,13 +1379,13 @@ static int inst_ld_indiix_b(Machine::State& cpu) {
 	const auto addr0 = calc_indIIX(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.b);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
 static int inst_ld_b_absiy(Machine::State& cpu) {
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.b, data1);
 	return 2;
 }
@@ -1394,7 +1394,7 @@ static int inst_ld_indiiy_b(Machine::State& cpu) {
 	const auto addr0 = calc_indIIY(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.b);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -1405,7 +1405,7 @@ static int inst_ld_l_a(Machine::State& cpu) {
 
 static int inst_ld_l_inddix(Machine::State& cpu) {
 	const auto addr1 = calc_indDIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.l, data1);
 	return 4;
 }
@@ -1417,7 +1417,7 @@ static int inst_ld_l_b(Machine::State& cpu) {
 
 static int inst_ld_l_inddiy(Machine::State& cpu) {
 	const auto addr1 = calc_indDIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.l, data1);
 	return 4;
 }
@@ -1429,7 +1429,7 @@ static int inst_ld_l_l(Machine::State& cpu) {
 
 static int inst_ld_l_indiix(Machine::State& cpu) {
 	const auto addr1 = calc_indIIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.l, data1);
 	return 4;
 }
@@ -1441,14 +1441,14 @@ static int inst_ld_l_h(Machine::State& cpu) {
 
 static int inst_ld_l_indiiy(Machine::State& cpu) {
 	const auto addr1 = calc_indIIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.l, data1);
 	return 4;
 }
 
 static int inst_ld_l_absbr(Machine::State& cpu) {
 	const auto addr1 = calc_absBR(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.l, data1);
 	return 3;
 }
@@ -1457,13 +1457,13 @@ static int inst_ld_inddix_l(Machine::State& cpu) {
 	const auto addr0 = calc_indDIX(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.l);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
 static int inst_ld_l_abshl(Machine::State& cpu) {
 	const auto addr1 = calc_absHL(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.l, data1);
 	return 2;
 }
@@ -1472,13 +1472,13 @@ static int inst_ld_inddiy_l(Machine::State& cpu) {
 	const auto addr0 = calc_indDIY(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.l);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
 static int inst_ld_l_absix(Machine::State& cpu) {
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.l, data1);
 	return 2;
 }
@@ -1487,13 +1487,13 @@ static int inst_ld_indiix_l(Machine::State& cpu) {
 	const auto addr0 = calc_indIIX(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.l);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
 static int inst_ld_l_absiy(Machine::State& cpu) {
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.l, data1);
 	return 2;
 }
@@ -1502,7 +1502,7 @@ static int inst_ld_indiiy_l(Machine::State& cpu) {
 	const auto addr0 = calc_indIIY(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.l);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -1513,7 +1513,7 @@ static int inst_ld_h_a(Machine::State& cpu) {
 
 static int inst_ld_h_inddix(Machine::State& cpu) {
 	const auto addr1 = calc_indDIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.h, data1);
 	return 4;
 }
@@ -1525,7 +1525,7 @@ static int inst_ld_h_b(Machine::State& cpu) {
 
 static int inst_ld_h_inddiy(Machine::State& cpu) {
 	const auto addr1 = calc_indDIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.h, data1);
 	return 4;
 }
@@ -1537,7 +1537,7 @@ static int inst_ld_h_l(Machine::State& cpu) {
 
 static int inst_ld_h_indiix(Machine::State& cpu) {
 	const auto addr1 = calc_indIIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.h, data1);
 	return 4;
 }
@@ -1549,14 +1549,14 @@ static int inst_ld_h_h(Machine::State& cpu) {
 
 static int inst_ld_h_indiiy(Machine::State& cpu) {
 	const auto addr1 = calc_indIIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.h, data1);
 	return 4;
 }
 
 static int inst_ld_h_absbr(Machine::State& cpu) {
 	const auto addr1 = calc_absBR(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.h, data1);
 	return 3;
 }
@@ -1565,7 +1565,7 @@ static int inst_ld_inddix_h(Machine::State& cpu) {
 	const auto addr0 = calc_indDIX(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.h);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -1576,7 +1576,7 @@ static int inst_cp_sp_ba(Machine::State& cpu) {
 
 static int inst_ld_h_abshl(Machine::State& cpu) {
 	const auto addr1 = calc_absHL(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.h, data1);
 	return 2;
 }
@@ -1585,7 +1585,7 @@ static int inst_ld_inddiy_h(Machine::State& cpu) {
 	const auto addr0 = calc_indDIY(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.h);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -1596,7 +1596,7 @@ static int inst_cp_sp_hl(Machine::State& cpu) {
 
 static int inst_ld_h_absix(Machine::State& cpu) {
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.h, data1);
 	return 2;
 }
@@ -1605,13 +1605,13 @@ static int inst_ld_indiix_h(Machine::State& cpu) {
 	const auto addr0 = calc_indIIX(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.h);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
 static int inst_ld_h_absiy(Machine::State& cpu) {
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.h, data1);
 	return 2;
 }
@@ -1620,7 +1620,7 @@ static int inst_ld_indiiy_h(Machine::State& cpu) {
 	const auto addr0 = calc_indIIY(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.h);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -1628,7 +1628,7 @@ static int inst_ld_absix_a(Machine::State& cpu) {
 	const auto addr0 = calc_absIX(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.a);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 2;
 }
 
@@ -1636,14 +1636,14 @@ static int inst_ld_abshl_inddix(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_indDIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_adc_ba_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_adc16(cpu, cpu.reg.ba, data1);
 	return 4;
 }
@@ -1652,7 +1652,7 @@ static int inst_ld_absix_b(Machine::State& cpu) {
 	const auto addr0 = calc_absIX(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.b);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 2;
 }
 
@@ -1660,14 +1660,14 @@ static int inst_ld_abshl_inddiy(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_indDIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_adc_hl_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_adc16(cpu, cpu.reg.hl, data1);
 	return 4;
 }
@@ -1676,7 +1676,7 @@ static int inst_ld_absix_l(Machine::State& cpu) {
 	const auto addr0 = calc_absIX(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.l);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 2;
 }
 
@@ -1684,14 +1684,14 @@ static int inst_ld_abshl_indiix(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_indIIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_sbc_ba_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_sbc16(cpu, cpu.reg.ba, data1);
 	return 4;
 }
@@ -1700,7 +1700,7 @@ static int inst_ld_absix_h(Machine::State& cpu) {
 	const auto addr0 = calc_absIX(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.h);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 2;
 }
 
@@ -1708,14 +1708,14 @@ static int inst_ld_abshl_indiiy(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_indIIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_sbc_hl_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_sbc16(cpu, cpu.reg.hl, data1);
 	return 4;
 }
@@ -1724,9 +1724,9 @@ static int inst_ld_absix_absbr(Machine::State& cpu) {
 	const auto addr0 = calc_absIX(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_absBR(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -1734,9 +1734,9 @@ static int inst_ld_absix_abshl(Machine::State& cpu) {
 	const auto addr0 = calc_absIX(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_absHL(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 3;
 }
 
@@ -1744,9 +1744,9 @@ static int inst_ld_absix_absix(Machine::State& cpu) {
 	const auto addr0 = calc_absIX(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 3;
 }
 
@@ -1754,9 +1754,9 @@ static int inst_ld_absix_absiy(Machine::State& cpu) {
 	const auto addr0 = calc_absIX(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 3;
 }
 
@@ -1764,7 +1764,7 @@ static int inst_ld_abshl_a(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.a);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 2;
 }
 
@@ -1772,14 +1772,14 @@ static int inst_ld_absix_inddix(Machine::State& cpu) {
 	const auto addr0 = calc_absIX(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_indDIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_add_sp_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_add16(cpu, cpu.reg.sp, data1);
 	return 4;
 }
@@ -1788,7 +1788,7 @@ static int inst_ld_abshl_b(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.b);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 2;
 }
 
@@ -1796,9 +1796,9 @@ static int inst_ld_absix_inddiy(Machine::State& cpu) {
 	const auto addr0 = calc_absIX(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_indDIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -1806,7 +1806,7 @@ static int inst_ld_abshl_l(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.l);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 2;
 }
 
@@ -1814,14 +1814,14 @@ static int inst_ld_absix_indiix(Machine::State& cpu) {
 	const auto addr0 = calc_absIX(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_indIIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_sub_sp_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_sub16(cpu, cpu.reg.sp, data1);
 	return 4;
 }
@@ -1830,7 +1830,7 @@ static int inst_ld_abshl_h(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.h);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 2;
 }
 
@@ -1838,9 +1838,9 @@ static int inst_ld_absix_indiiy(Machine::State& cpu) {
 	const auto addr0 = calc_absIX(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_indIIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -1848,14 +1848,14 @@ static int inst_ld_abshl_absbr(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_absBR(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
 static int inst_cp_sp_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_cp16(cpu, cpu.reg.sp, data1);
 	return 4;
 }
@@ -1864,9 +1864,9 @@ static int inst_ld_abshl_abshl(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_absHL(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 3;
 }
 
@@ -1874,14 +1874,14 @@ static int inst_ld_abshl_absix(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 3;
 }
 
 static int inst_ld_sp_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_ld16(cpu, cpu.reg.sp, data1);
 	return 4;
 }
@@ -1890,9 +1890,9 @@ static int inst_ld_abshl_absiy(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 3;
 }
 
@@ -1900,13 +1900,13 @@ static int inst_ld_absiy_a(Machine::State& cpu) {
 	const auto addr0 = calc_absIY(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.a);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 2;
 }
 
 static int inst_ld_ba_inddsp(Machine::State& cpu) {
 	const auto addr1 = calc_indDSP(cpu);
-	const uint16_t data1 = cpu_read16(cpu, addr1);
+	const uint16_t data1 = Machine::read16(cpu, addr1);
 	op_ld16(cpu, cpu.reg.ba, data1);
 	return 6;
 }
@@ -1915,13 +1915,13 @@ static int inst_ld_absiy_b(Machine::State& cpu) {
 	const auto addr0 = calc_absIY(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.b);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 2;
 }
 
 static int inst_ld_hl_inddsp(Machine::State& cpu) {
 	const auto addr1 = calc_indDSP(cpu);
-	const uint16_t data1 = cpu_read16(cpu, addr1);
+	const uint16_t data1 = Machine::read16(cpu, addr1);
 	op_ld16(cpu, cpu.reg.hl, data1);
 	return 6;
 }
@@ -1930,13 +1930,13 @@ static int inst_ld_absiy_l(Machine::State& cpu) {
 	const auto addr0 = calc_absIY(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.l);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 2;
 }
 
 static int inst_ld_ix_inddsp(Machine::State& cpu) {
 	const auto addr1 = calc_indDSP(cpu);
-	const uint16_t data1 = cpu_read16(cpu, addr1);
+	const uint16_t data1 = Machine::read16(cpu, addr1);
 	op_ld16(cpu, cpu.reg.ix, data1);
 	return 6;
 }
@@ -1945,13 +1945,13 @@ static int inst_ld_absiy_h(Machine::State& cpu) {
 	const auto addr0 = calc_absIY(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.h);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 2;
 }
 
 static int inst_ld_iy_inddsp(Machine::State& cpu) {
 	const auto addr1 = calc_indDSP(cpu);
-	const uint16_t data1 = cpu_read16(cpu, addr1);
+	const uint16_t data1 = Machine::read16(cpu, addr1);
 	op_ld16(cpu, cpu.reg.iy, data1);
 	return 6;
 }
@@ -1960,9 +1960,9 @@ static int inst_ld_absiy_absbr(Machine::State& cpu) {
 	const auto addr0 = calc_absIY(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_absBR(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -1970,7 +1970,7 @@ static int inst_ld_inddsp_ba(Machine::State& cpu) {
 	const auto addr0 = calc_indDSP(cpu);
 	uint16_t data0;
 	op_ld16(cpu, data0, cpu.reg.ba);
-	cpu_write16(cpu, data0, addr0);
+	Machine::write16(cpu, data0, addr0);
 	return 6;
 }
 
@@ -1978,9 +1978,9 @@ static int inst_ld_absiy_abshl(Machine::State& cpu) {
 	const auto addr0 = calc_absIY(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_absHL(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 3;
 }
 
@@ -1988,7 +1988,7 @@ static int inst_ld_inddsp_hl(Machine::State& cpu) {
 	const auto addr0 = calc_indDSP(cpu);
 	uint16_t data0;
 	op_ld16(cpu, data0, cpu.reg.hl);
-	cpu_write16(cpu, data0, addr0);
+	Machine::write16(cpu, data0, addr0);
 	return 6;
 }
 
@@ -1996,9 +1996,9 @@ static int inst_ld_absiy_absix(Machine::State& cpu) {
 	const auto addr0 = calc_absIY(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 3;
 }
 
@@ -2006,7 +2006,7 @@ static int inst_ld_inddsp_ix(Machine::State& cpu) {
 	const auto addr0 = calc_indDSP(cpu);
 	uint16_t data0;
 	op_ld16(cpu, data0, cpu.reg.ix);
-	cpu_write16(cpu, data0, addr0);
+	Machine::write16(cpu, data0, addr0);
 	return 6;
 }
 
@@ -2014,9 +2014,9 @@ static int inst_ld_absiy_absiy(Machine::State& cpu) {
 	const auto addr0 = calc_absIY(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 3;
 }
 
@@ -2024,7 +2024,7 @@ static int inst_ld_inddsp_iy(Machine::State& cpu) {
 	const auto addr0 = calc_indDSP(cpu);
 	uint16_t data0;
 	op_ld16(cpu, data0, cpu.reg.iy);
-	cpu_write16(cpu, data0, addr0);
+	Machine::write16(cpu, data0, addr0);
 	return 6;
 }
 
@@ -2032,7 +2032,7 @@ static int inst_ld_absbr_a(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.a);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 3;
 }
 
@@ -2040,15 +2040,15 @@ static int inst_ld_absiy_inddix(Machine::State& cpu) {
 	const auto addr0 = calc_absIY(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_indDIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_ld_sp_ind16(Machine::State& cpu) {
 	const auto addr1 = calc_ind16(cpu);
-	const uint16_t data1 = cpu_read16(cpu, addr1);
+	const uint16_t data1 = Machine::read16(cpu, addr1);
 	op_ld16(cpu, cpu.reg.sp, data1);
 	return 6;
 }
@@ -2057,7 +2057,7 @@ static int inst_ld_absbr_b(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.b);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 3;
 }
 
@@ -2065,9 +2065,9 @@ static int inst_ld_absiy_inddiy(Machine::State& cpu) {
 	const auto addr0 = calc_absIY(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_indDIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -2075,7 +2075,7 @@ static int inst_ld_absbr_l(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.l);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 3;
 }
 
@@ -2083,9 +2083,9 @@ static int inst_ld_absiy_indiix(Machine::State& cpu) {
 	const auto addr0 = calc_absIY(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_indIIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -2093,7 +2093,7 @@ static int inst_ld_absbr_h(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.h);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 3;
 }
 
@@ -2101,9 +2101,9 @@ static int inst_ld_absiy_indiiy(Machine::State& cpu) {
 	const auto addr0 = calc_absIY(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_indIIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -2111,7 +2111,7 @@ static int inst_ld_ind16_sp(Machine::State& cpu) {
 	const auto addr0 = calc_ind16(cpu);
 	uint16_t data0;
 	op_ld16(cpu, data0, cpu.reg.sp);
-	cpu_write16(cpu, data0, addr0);
+	Machine::write16(cpu, data0, addr0);
 	return 6;
 }
 
@@ -2119,9 +2119,9 @@ static int inst_ld_absbr_abshl(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_absHL(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -2129,9 +2129,9 @@ static int inst_ld_absbr_absix(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_absIX(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -2139,9 +2139,9 @@ static int inst_ld_absbr_absiy(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
 	uint8_t data0;
 	const auto addr1 = calc_absIY(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -2172,9 +2172,9 @@ static int inst_inc_l(Machine::State& cpu) {
 
 static int inst_sla_absbr(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_sla8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -2185,9 +2185,9 @@ static int inst_inc_h(Machine::State& cpu) {
 
 static int inst_sla_abshl(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_sla8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -2203,9 +2203,9 @@ static int inst_sll_a(Machine::State& cpu) {
 
 static int inst_inc_absbr(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_inc8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -2216,17 +2216,17 @@ static int inst_sll_b(Machine::State& cpu) {
 
 static int inst_inc_abshl(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_inc8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 3;
 }
 
 static int inst_sll_absbr(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_sll8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -2237,9 +2237,9 @@ static int inst_inc_sp(Machine::State& cpu) {
 
 static int inst_sll_abshl(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_sll8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -2270,9 +2270,9 @@ static int inst_dec_l(Machine::State& cpu) {
 
 static int inst_sra_absbr(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_sra8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -2283,9 +2283,9 @@ static int inst_dec_h(Machine::State& cpu) {
 
 static int inst_sra_abshl(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_sra8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -2301,9 +2301,9 @@ static int inst_srl_a(Machine::State& cpu) {
 
 static int inst_dec_absbr(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_dec8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -2314,17 +2314,17 @@ static int inst_srl_b(Machine::State& cpu) {
 
 static int inst_dec_abshl(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_dec8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 3;
 }
 
 static int inst_srl_absbr(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_srl8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -2335,9 +2335,9 @@ static int inst_dec_sp(Machine::State& cpu) {
 
 static int inst_srl_abshl(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_srl8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -2368,9 +2368,9 @@ static int inst_inc_ix(Machine::State& cpu) {
 
 static int inst_rl_absbr(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_rl8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -2381,9 +2381,9 @@ static int inst_inc_iy(Machine::State& cpu) {
 
 static int inst_rl_abshl(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_rl8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -2399,8 +2399,8 @@ static int inst_rlc_a(Machine::State& cpu) {
 
 static int inst_bit_abshl_imm8(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	const uint8_t data0 = cpu_read8(cpu, addr0);
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::read8(cpu, addr0);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_bit8(cpu, data0, data1);
 	return 3;
 }
@@ -2411,30 +2411,30 @@ static int inst_rlc_b(Machine::State& cpu) {
 }
 
 static int inst_bit_a_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_bit8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_rlc_absbr(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_rlc8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_bit_b_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_bit8(cpu, cpu.reg.b, data1);
 	return 2;
 }
 
 static int inst_rlc_abshl(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_rlc8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -2465,9 +2465,9 @@ static int inst_dec_ix(Machine::State& cpu) {
 
 static int inst_rr_absbr(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_rr8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -2478,14 +2478,14 @@ static int inst_dec_iy(Machine::State& cpu) {
 
 static int inst_rr_abshl(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_rr8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
 static int inst_and_sc_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_and8(cpu, cpu.reg.sc, data1);
 	return 3 + inst_advance(cpu); // Block IRQs
 }
@@ -2496,7 +2496,7 @@ static int inst_rrc_a(Machine::State& cpu) {
 }
 
 static int inst_or_sc_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_or8(cpu, cpu.reg.sc, data1);
 	return 3 + inst_advance(cpu); // Block IRQs
 }
@@ -2507,30 +2507,30 @@ static int inst_rrc_b(Machine::State& cpu) {
 }
 
 static int inst_xor_sc_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_xor8(cpu, cpu.reg.sc, data1);
 	return 3 + inst_advance(cpu); // Block IRQs
 }
 
 static int inst_rrc_absbr(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_rrc8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_ld_sc_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_ld8(cpu, cpu.reg.sc, data1);
 	return 3 + inst_advance(cpu); // Block IRQs
 }
 
 static int inst_rrc_abshl(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_rrc8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -2561,9 +2561,9 @@ static int inst_push_ix(Machine::State& cpu) {
 
 static int inst_cpl_absbr(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_cpl8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -2574,9 +2574,9 @@ static int inst_push_iy(Machine::State& cpu) {
 
 static int inst_cpl_abshl(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_cpl8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -2607,9 +2607,9 @@ int clock_inst_push_ip(Machine::State& cpu) {
 
 static int inst_neg_absbr(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_neg8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -2620,9 +2620,9 @@ static int inst_push_sc(Machine::State& cpu) {
 
 static int inst_neg_abshl(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_neg8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -2682,13 +2682,13 @@ int clock_inst_slp(Machine::State& cpu) {
 }
 
 static int inst_ld_a_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_ld8(cpu, cpu.reg.a, data1);
 	return 2;
 }
 
 static int inst_and_b_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_and8(cpu, cpu.reg.b, data1);
 	return 3;
 }
@@ -2699,13 +2699,13 @@ static int inst_push_a(Machine::State& cpu) {
 }
 
 static int inst_ld_b_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_ld8(cpu, cpu.reg.b, data1);
 	return 2;
 }
 
 static int inst_and_l_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_and8(cpu, cpu.reg.l, data1);
 	return 3;
 }
@@ -2716,13 +2716,13 @@ static int inst_push_b(Machine::State& cpu) {
 }
 
 static int inst_ld_l_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_ld8(cpu, cpu.reg.l, data1);
 	return 2;
 }
 
 static int inst_and_h_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_and8(cpu, cpu.reg.h, data1);
 	return 3;
 }
@@ -2733,7 +2733,7 @@ static int inst_push_l(Machine::State& cpu) {
 }
 
 static int inst_ld_h_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_ld8(cpu, cpu.reg.h, data1);
 	return 2;
 }
@@ -2744,13 +2744,13 @@ static int inst_push_h(Machine::State& cpu) {
 }
 
 static int inst_ld_br_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_ld8(cpu, cpu.reg.br, data1);
 	return 2;
 }
 
 static int inst_or_b_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_or8(cpu, cpu.reg.b, data1);
 	return 3;
 }
@@ -2763,14 +2763,14 @@ static int inst_pop_a(Machine::State& cpu) {
 static int inst_ld_abshl_imm8(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
 	uint8_t data0;
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 3;
 }
 
 static int inst_or_l_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_or8(cpu, cpu.reg.l, data1);
 	return 3;
 }
@@ -2783,14 +2783,14 @@ static int inst_pop_b(Machine::State& cpu) {
 static int inst_ld_absix_imm8(Machine::State& cpu) {
 	const auto addr0 = calc_absIX(cpu);
 	uint8_t data0;
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 3;
 }
 
 static int inst_or_h_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_or8(cpu, cpu.reg.h, data1);
 	return 3;
 }
@@ -2803,9 +2803,9 @@ static int inst_pop_l(Machine::State& cpu) {
 static int inst_ld_absiy_imm8(Machine::State& cpu) {
 	const auto addr0 = calc_absIY(cpu);
 	uint8_t data0;
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 3;
 }
 
@@ -2816,13 +2816,13 @@ static int inst_pop_h(Machine::State& cpu) {
 
 static int inst_ld_ba_ind16(Machine::State& cpu) {
 	const auto addr1 = calc_ind16(cpu);
-	const uint16_t data1 = cpu_read16(cpu, addr1);
+	const uint16_t data1 = Machine::read16(cpu, addr1);
 	op_ld16(cpu, cpu.reg.ba, data1);
 	return 5;
 }
 
 static int inst_xor_b_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_xor8(cpu, cpu.reg.b, data1);
 	return 3;
 }
@@ -2834,13 +2834,13 @@ int clock_inst_push_all(Machine::State& cpu) {
 
 static int inst_ld_hl_ind16(Machine::State& cpu) {
 	const auto addr1 = calc_ind16(cpu);
-	const uint16_t data1 = cpu_read16(cpu, addr1);
+	const uint16_t data1 = Machine::read16(cpu, addr1);
 	op_ld16(cpu, cpu.reg.hl, data1);
 	return 5;
 }
 
 static int inst_xor_l_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_xor8(cpu, cpu.reg.l, data1);
 	return 3;
 }
@@ -2852,20 +2852,20 @@ int clock_inst_push_ale(Machine::State& cpu) {
 
 static int inst_ld_ix_ind16(Machine::State& cpu) {
 	const auto addr1 = calc_ind16(cpu);
-	const uint16_t data1 = cpu_read16(cpu, addr1);
+	const uint16_t data1 = Machine::read16(cpu, addr1);
 	op_ld16(cpu, cpu.reg.ix, data1);
 	return 5;
 }
 
 static int inst_xor_h_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_xor8(cpu, cpu.reg.h, data1);
 	return 3;
 }
 
 static int inst_ld_iy_ind16(Machine::State& cpu) {
 	const auto addr1 = calc_ind16(cpu);
-	const uint16_t data1 = cpu_read16(cpu, addr1);
+	const uint16_t data1 = Machine::read16(cpu, addr1);
 	op_ld16(cpu, cpu.reg.iy, data1);
 	return 5;
 }
@@ -2874,12 +2874,12 @@ static int inst_ld_ind16_ba(Machine::State& cpu) {
 	const auto addr0 = calc_ind16(cpu);
 	uint16_t data0;
 	op_ld16(cpu, data0, cpu.reg.ba);
-	cpu_write16(cpu, data0, addr0);
+	Machine::write16(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_cp_b_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_cp8(cpu, cpu.reg.b, data1);
 	return 3;
 }
@@ -2893,12 +2893,12 @@ static int inst_ld_ind16_hl(Machine::State& cpu) {
 	const auto addr0 = calc_ind16(cpu);
 	uint16_t data0;
 	op_ld16(cpu, data0, cpu.reg.hl);
-	cpu_write16(cpu, data0, addr0);
+	Machine::write16(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_cp_l_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_cp8(cpu, cpu.reg.l, data1);
 	return 3;
 }
@@ -2912,12 +2912,12 @@ static int inst_ld_ind16_ix(Machine::State& cpu) {
 	const auto addr0 = calc_ind16(cpu);
 	uint16_t data0;
 	op_ld16(cpu, data0, cpu.reg.ix);
-	cpu_write16(cpu, data0, addr0);
+	Machine::write16(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_cp_h_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_cp8(cpu, cpu.reg.h, data1);
 	return 3;
 }
@@ -2926,18 +2926,18 @@ static int inst_ld_ind16_iy(Machine::State& cpu) {
 	const auto addr0 = calc_ind16(cpu);
 	uint16_t data0;
 	op_ld16(cpu, data0, cpu.reg.iy);
-	cpu_write16(cpu, data0, addr0);
+	Machine::write16(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_cp_br_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_cp8(cpu, cpu.reg.br, data1);
 	return 3;
 }
 
 static int inst_add_ba_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_add16(cpu, cpu.reg.ba, data1);
 	return 3;
 }
@@ -2949,13 +2949,13 @@ static int inst_ld_a_br(Machine::State& cpu) {
 
 static int inst_ld_ba_abshl(Machine::State& cpu) {
 	const auto addr1 = calc_absHL(cpu);
-	const uint16_t data1 = cpu_read16(cpu, addr1);
+	const uint16_t data1 = Machine::read16(cpu, addr1);
 	op_ld16(cpu, cpu.reg.ba, data1);
 	return 5;
 }
 
 static int inst_add_hl_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_add16(cpu, cpu.reg.hl, data1);
 	return 3;
 }
@@ -2967,13 +2967,13 @@ static int inst_ld_a_sc(Machine::State& cpu) {
 
 static int inst_ld_hl_abshl(Machine::State& cpu) {
 	const auto addr1 = calc_absHL(cpu);
-	const uint16_t data1 = cpu_read16(cpu, addr1);
+	const uint16_t data1 = Machine::read16(cpu, addr1);
 	op_ld16(cpu, cpu.reg.hl, data1);
 	return 5;
 }
 
 static int inst_add_ix_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_add16(cpu, cpu.reg.ix, data1);
 	return 3;
 }
@@ -2985,13 +2985,13 @@ static int inst_ld_br_a(Machine::State& cpu) {
 
 static int inst_ld_ix_abshl(Machine::State& cpu) {
 	const auto addr1 = calc_absHL(cpu);
-	const uint16_t data1 = cpu_read16(cpu, addr1);
+	const uint16_t data1 = Machine::read16(cpu, addr1);
 	op_ld16(cpu, cpu.reg.ix, data1);
 	return 5;
 }
 
 static int inst_add_iy_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_add16(cpu, cpu.reg.iy, data1);
 	return 3;
 }
@@ -3003,19 +3003,19 @@ static int inst_ld_sc_a(Machine::State& cpu) {
 
 static int inst_ld_iy_abshl(Machine::State& cpu) {
 	const auto addr1 = calc_absHL(cpu);
-	const uint16_t data1 = cpu_read16(cpu, addr1);
+	const uint16_t data1 = Machine::read16(cpu, addr1);
 	op_ld16(cpu, cpu.reg.iy, data1);
 	return 5;
 }
 
 static int inst_ld_ba_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_ld16(cpu, cpu.reg.ba, data1);
 	return 3;
 }
 
 static int inst_ld_nb_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_ld8(cpu, cpu.reg.nb, data1);
 	return 4 + inst_advance(cpu); // Block IRQs
 }
@@ -3024,18 +3024,18 @@ static int inst_ld_abshl_ba(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
 	uint16_t data0;
 	op_ld16(cpu, data0, cpu.reg.ba);
-	cpu_write16(cpu, data0, addr0);
+	Machine::write16(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_ld_hl_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_ld16(cpu, cpu.reg.hl, data1);
 	return 3;
 }
 
 static int inst_ld_ep_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_ld8(cpu, cpu.reg.ep, data1);
 	return 3;
 }
@@ -3044,18 +3044,18 @@ static int inst_ld_abshl_hl(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
 	uint16_t data0;
 	op_ld16(cpu, data0, cpu.reg.hl);
-	cpu_write16(cpu, data0, addr0);
+	Machine::write16(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_ld_ix_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_ld16(cpu, cpu.reg.ix, data1);
 	return 3;
 }
 
 static int inst_ld_xp_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_ld8(cpu, cpu.reg.xp, data1);
 	return 3;
 }
@@ -3064,18 +3064,18 @@ static int inst_ld_abshl_ix(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
 	uint16_t data0;
 	op_ld16(cpu, data0, cpu.reg.ix);
-	cpu_write16(cpu, data0, addr0);
+	Machine::write16(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_ld_iy_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_ld16(cpu, cpu.reg.iy, data1);
 	return 3;
 }
 
 static int inst_ld_yp_imm8(Machine::State& cpu) {
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_ld8(cpu, cpu.reg.yp, data1);
 	return 3;
 }
@@ -3084,7 +3084,7 @@ static int inst_ld_abshl_iy(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
 	uint16_t data0;
 	op_ld16(cpu, data0, cpu.reg.iy);
-	cpu_write16(cpu, data0, addr0);
+	Machine::write16(cpu, data0, addr0);
 	return 5;
 }
 
@@ -3140,9 +3140,9 @@ static int inst_ld_nb_a(Machine::State& cpu) {
 
 static int inst_ex_a_abshl(Machine::State& cpu) {
 	const auto addr1 = calc_absHL(cpu);
-	uint8_t data1 = cpu_read8(cpu, addr1);
+	uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ex8(cpu, cpu.reg.a, data1);
-	cpu_write8(cpu, data1, addr1);
+	Machine::write8(cpu, data1, addr1);
 	return 3;
 }
 
@@ -3162,87 +3162,87 @@ static int inst_ld_yp_a(Machine::State& cpu) {
 }
 
 static int inst_sub_ba_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_sub16(cpu, cpu.reg.ba, data1);
 	return 3;
 }
 
 static int inst_ld_a_ind16(Machine::State& cpu) {
 	const auto addr1 = calc_ind16(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.a, data1);
 	return 5;
 }
 
 static int inst_ld_ba_absix(Machine::State& cpu) {
 	const auto addr1 = calc_absIX(cpu);
-	const uint16_t data1 = cpu_read16(cpu, addr1);
+	const uint16_t data1 = Machine::read16(cpu, addr1);
 	op_ld16(cpu, cpu.reg.ba, data1);
 	return 5;
 }
 
 static int inst_sub_hl_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_sub16(cpu, cpu.reg.hl, data1);
 	return 3;
 }
 
 static int inst_ld_b_ind16(Machine::State& cpu) {
 	const auto addr1 = calc_ind16(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.b, data1);
 	return 5;
 }
 
 static int inst_ld_hl_absix(Machine::State& cpu) {
 	const auto addr1 = calc_absIX(cpu);
-	const uint16_t data1 = cpu_read16(cpu, addr1);
+	const uint16_t data1 = Machine::read16(cpu, addr1);
 	op_ld16(cpu, cpu.reg.hl, data1);
 	return 5;
 }
 
 static int inst_sub_ix_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_sub16(cpu, cpu.reg.ix, data1);
 	return 3;
 }
 
 static int inst_ld_l_ind16(Machine::State& cpu) {
 	const auto addr1 = calc_ind16(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.l, data1);
 	return 5;
 }
 
 static int inst_ld_ix_absix(Machine::State& cpu) {
 	const auto addr1 = calc_absIX(cpu);
-	const uint16_t data1 = cpu_read16(cpu, addr1);
+	const uint16_t data1 = Machine::read16(cpu, addr1);
 	op_ld16(cpu, cpu.reg.ix, data1);
 	return 5;
 }
 
 static int inst_sub_iy_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_sub16(cpu, cpu.reg.iy, data1);
 	return 3;
 }
 
 static int inst_ld_h_ind16(Machine::State& cpu) {
 	const auto addr1 = calc_ind16(cpu);
-	const uint8_t data1 = cpu_read8(cpu, addr1);
+	const uint8_t data1 = Machine::read8(cpu, addr1);
 	op_ld8(cpu, cpu.reg.h, data1);
 	return 5;
 }
 
 static int inst_ld_iy_absix(Machine::State& cpu) {
 	const auto addr1 = calc_absIX(cpu);
-	const uint16_t data1 = cpu_read16(cpu, addr1);
+	const uint16_t data1 = Machine::read16(cpu, addr1);
 	op_ld16(cpu, cpu.reg.iy, data1);
 	return 5;
 }
 
 static int inst_cp_ba_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_cp16(cpu, cpu.reg.ba, data1);
 	return 3;
 }
@@ -3251,7 +3251,7 @@ static int inst_ld_ind16_a(Machine::State& cpu) {
 	const auto addr0 = calc_ind16(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.a);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -3259,12 +3259,12 @@ static int inst_ld_absix_ba(Machine::State& cpu) {
 	const auto addr0 = calc_absIX(cpu);
 	uint16_t data0;
 	op_ld16(cpu, data0, cpu.reg.ba);
-	cpu_write16(cpu, data0, addr0);
+	Machine::write16(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_cp_hl_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_cp16(cpu, cpu.reg.hl, data1);
 	return 3;
 }
@@ -3273,7 +3273,7 @@ static int inst_ld_ind16_b(Machine::State& cpu) {
 	const auto addr0 = calc_ind16(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.b);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -3281,12 +3281,12 @@ static int inst_ld_absix_hl(Machine::State& cpu) {
 	const auto addr0 = calc_absIX(cpu);
 	uint16_t data0;
 	op_ld16(cpu, data0, cpu.reg.hl);
-	cpu_write16(cpu, data0, addr0);
+	Machine::write16(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_cp_ix_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_cp16(cpu, cpu.reg.ix, data1);
 	return 3;
 }
@@ -3295,7 +3295,7 @@ static int inst_ld_ind16_l(Machine::State& cpu) {
 	const auto addr0 = calc_ind16(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.l);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -3303,12 +3303,12 @@ static int inst_ld_absix_ix(Machine::State& cpu) {
 	const auto addr0 = calc_absIX(cpu);
 	uint16_t data0;
 	op_ld16(cpu, data0, cpu.reg.ix);
-	cpu_write16(cpu, data0, addr0);
+	Machine::write16(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_cp_iy_imm16(Machine::State& cpu) {
-	const uint16_t data1 = cpu_imm16(cpu);
+	const uint16_t data1 = Machine::imm16(cpu);
 	op_cp16(cpu, cpu.reg.iy, data1);
 	return 3;
 }
@@ -3317,7 +3317,7 @@ static int inst_ld_ind16_h(Machine::State& cpu) {
 	const auto addr0 = calc_ind16(cpu);
 	uint8_t data0;
 	op_ld8(cpu, data0, cpu.reg.h);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -3325,16 +3325,16 @@ static int inst_ld_absix_iy(Machine::State& cpu) {
 	const auto addr0 = calc_absIX(cpu);
 	uint16_t data0;
 	op_ld16(cpu, data0, cpu.reg.iy);
-	cpu_write16(cpu, data0, addr0);
+	Machine::write16(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_and_absbr_imm8(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
-	const uint8_t data1 = cpu_imm8(cpu);
+	uint8_t data0 = Machine::read8(cpu, addr0);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_and8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -3345,17 +3345,17 @@ int clock_inst_mlt(Machine::State& cpu) {
 
 static int inst_ld_ba_absiy(Machine::State& cpu) {
 	const auto addr1 = calc_absIY(cpu);
-	const uint16_t data1 = cpu_read16(cpu, addr1);
+	const uint16_t data1 = Machine::read16(cpu, addr1);
 	op_ld16(cpu, cpu.reg.ba, data1);
 	return 5;
 }
 
 static int inst_or_absbr_imm8(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
-	const uint8_t data1 = cpu_imm8(cpu);
+	uint8_t data0 = Machine::read8(cpu, addr0);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_or8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
@@ -3366,46 +3366,46 @@ int clock_inst_div(Machine::State& cpu) {
 
 static int inst_ld_hl_absiy(Machine::State& cpu) {
 	const auto addr1 = calc_absIY(cpu);
-	const uint16_t data1 = cpu_read16(cpu, addr1);
+	const uint16_t data1 = Machine::read16(cpu, addr1);
 	op_ld16(cpu, cpu.reg.hl, data1);
 	return 5;
 }
 
 static int inst_xor_absbr_imm8(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
-	const uint8_t data1 = cpu_imm8(cpu);
+	uint8_t data0 = Machine::read8(cpu, addr0);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_xor8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_ld_ix_absiy(Machine::State& cpu) {
 	const auto addr1 = calc_absIY(cpu);
-	const uint16_t data1 = cpu_read16(cpu, addr1);
+	const uint16_t data1 = Machine::read16(cpu, addr1);
 	op_ld16(cpu, cpu.reg.ix, data1);
 	return 5;
 }
 
 static int inst_cp_absbr_imm8(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
-	const uint8_t data0 = cpu_read8(cpu, addr0);
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::read8(cpu, addr0);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_cp8(cpu, data0, data1);
 	return 4;
 }
 
 static int inst_ld_iy_absiy(Machine::State& cpu) {
 	const auto addr1 = calc_absIY(cpu);
-	const uint16_t data1 = cpu_read16(cpu, addr1);
+	const uint16_t data1 = Machine::read16(cpu, addr1);
 	op_ld16(cpu, cpu.reg.iy, data1);
 	return 5;
 }
 
 static int inst_bit_absbr_imm8(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
-	const uint8_t data0 = cpu_read8(cpu, addr0);
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::read8(cpu, addr0);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_bit8(cpu, data0, data1);
 	return 4;
 }
@@ -3414,16 +3414,16 @@ static int inst_ld_absiy_ba(Machine::State& cpu) {
 	const auto addr0 = calc_absIY(cpu);
 	uint16_t data0;
 	op_ld16(cpu, data0, cpu.reg.ba);
-	cpu_write16(cpu, data0, addr0);
+	Machine::write16(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_ld_absbr_imm8(Machine::State& cpu) {
 	const auto addr0 = calc_absBR(cpu);
 	uint8_t data0;
-	const uint8_t data1 = cpu_imm8(cpu);
+	const uint8_t data1 = Machine::imm8(cpu);
 	op_ld8(cpu, data0, data1);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 4;
 }
 
@@ -3431,7 +3431,7 @@ static int inst_ld_absiy_hl(Machine::State& cpu) {
 	const auto addr0 = calc_absIY(cpu);
 	uint16_t data0;
 	op_ld16(cpu, data0, cpu.reg.hl);
-	cpu_write16(cpu, data0, addr0);
+	Machine::write16(cpu, data0, addr0);
 	return 5;
 }
 
@@ -3444,7 +3444,7 @@ static int inst_ld_absiy_ix(Machine::State& cpu) {
 	const auto addr0 = calc_absIY(cpu);
 	uint16_t data0;
 	op_ld16(cpu, data0, cpu.reg.ix);
-	cpu_write16(cpu, data0, addr0);
+	Machine::write16(cpu, data0, addr0);
 	return 5;
 }
 
@@ -3457,12 +3457,12 @@ static int inst_ld_absiy_iy(Machine::State& cpu) {
 	const auto addr0 = calc_absIY(cpu);
 	uint16_t data0;
 	op_ld16(cpu, data0, cpu.reg.iy);
-	cpu_write16(cpu, data0, addr0);
+	Machine::write16(cpu, data0, addr0);
 	return 5;
 }
 
 static int inst_cars_c_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(cpu.reg.flag.c)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 2;
@@ -3472,7 +3472,7 @@ static int inst_cars_c_imm8(Machine::State& cpu) {
 }
 
 static int inst_jrs_lt_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(cpu.reg.flag.n != cpu.reg.flag.v)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3487,7 +3487,7 @@ static int inst_ld_ba_ba(Machine::State& cpu) {
 }
 
 static int inst_cars_nc_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(!cpu.reg.flag.c)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 2;
@@ -3497,7 +3497,7 @@ static int inst_cars_nc_imm8(Machine::State& cpu) {
 }
 
 static int inst_jrs_le_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!((cpu.reg.flag.n != cpu.reg.flag.v) || cpu.reg.flag.z)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3512,7 +3512,7 @@ static int inst_ld_ba_hl(Machine::State& cpu) {
 }
 
 static int inst_cars_z_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(cpu.reg.flag.z)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 2;
@@ -3522,7 +3522,7 @@ static int inst_cars_z_imm8(Machine::State& cpu) {
 }
 
 static int inst_jrs_gt_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!((cpu.reg.flag.n == cpu.reg.flag.v) && !cpu.reg.flag.z)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3537,7 +3537,7 @@ static int inst_ld_ba_ix(Machine::State& cpu) {
 }
 
 static int inst_cars_nz_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(!cpu.reg.flag.z)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 2;
@@ -3547,7 +3547,7 @@ static int inst_cars_nz_imm8(Machine::State& cpu) {
 }
 
 static int inst_jrs_ge_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(cpu.reg.flag.n == cpu.reg.flag.v)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3562,7 +3562,7 @@ static int inst_ld_ba_iy(Machine::State& cpu) {
 }
 
 static int inst_jrs_c_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(cpu.reg.flag.c)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 2;
@@ -3572,7 +3572,7 @@ static int inst_jrs_c_imm8(Machine::State& cpu) {
 }
 
 static int inst_jrs_v_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(cpu.reg.flag.v)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3587,7 +3587,7 @@ static int inst_ld_hl_ba(Machine::State& cpu) {
 }
 
 static int inst_jrs_nc_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(!cpu.reg.flag.c)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 2;
@@ -3597,7 +3597,7 @@ static int inst_jrs_nc_imm8(Machine::State& cpu) {
 }
 
 static int inst_jrs_nv_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(!cpu.reg.flag.v)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3612,7 +3612,7 @@ static int inst_ld_hl_hl(Machine::State& cpu) {
 }
 
 static int inst_jrs_z_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(cpu.reg.flag.z)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 2;
@@ -3622,7 +3622,7 @@ static int inst_jrs_z_imm8(Machine::State& cpu) {
 }
 
 static int inst_jrs_p_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(!cpu.reg.flag.n)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3637,7 +3637,7 @@ static int inst_ld_hl_ix(Machine::State& cpu) {
 }
 
 static int inst_jrs_nz_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(!cpu.reg.flag.z)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 2;
@@ -3647,7 +3647,7 @@ static int inst_jrs_nz_imm8(Machine::State& cpu) {
 }
 
 static int inst_jrs_m_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(cpu.reg.flag.n)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3662,7 +3662,7 @@ static int inst_ld_hl_iy(Machine::State& cpu) {
 }
 
 static int inst_carl_c_imm16(Machine::State& cpu) {
-	const uint16_t data0 = cpu_imm16(cpu);
+	const uint16_t data0 = Machine::imm16(cpu);
 	if (!(cpu.reg.flag.c)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3672,7 +3672,7 @@ static int inst_carl_c_imm16(Machine::State& cpu) {
 }
 
 static int inst_jrs_f0_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(cpu.reg.flag.f0)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3687,7 +3687,7 @@ static int inst_ld_ix_ba(Machine::State& cpu) {
 }
 
 static int inst_carl_nc_imm16(Machine::State& cpu) {
-	const uint16_t data0 = cpu_imm16(cpu);
+	const uint16_t data0 = Machine::imm16(cpu);
 	if (!(!cpu.reg.flag.c)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3697,7 +3697,7 @@ static int inst_carl_nc_imm16(Machine::State& cpu) {
 }
 
 static int inst_jrs_f1_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(cpu.reg.flag.f1)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3712,7 +3712,7 @@ static int inst_ld_ix_hl(Machine::State& cpu) {
 }
 
 static int inst_carl_z_imm16(Machine::State& cpu) {
-	const uint16_t data0 = cpu_imm16(cpu);
+	const uint16_t data0 = Machine::imm16(cpu);
 	if (!(cpu.reg.flag.z)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3722,7 +3722,7 @@ static int inst_carl_z_imm16(Machine::State& cpu) {
 }
 
 static int inst_jrs_f2_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(cpu.reg.flag.f2)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3737,7 +3737,7 @@ static int inst_ld_ix_ix(Machine::State& cpu) {
 }
 
 static int inst_carl_nz_imm16(Machine::State& cpu) {
-	const uint16_t data0 = cpu_imm16(cpu);
+	const uint16_t data0 = Machine::imm16(cpu);
 	if (!(!cpu.reg.flag.z)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3747,7 +3747,7 @@ static int inst_carl_nz_imm16(Machine::State& cpu) {
 }
 
 static int inst_jrs_f3_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(cpu.reg.flag.f3)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3762,7 +3762,7 @@ static int inst_ld_ix_iy(Machine::State& cpu) {
 }
 
 static int inst_jrl_c_imm16(Machine::State& cpu) {
-	const uint16_t data0 = cpu_imm16(cpu);
+	const uint16_t data0 = Machine::imm16(cpu);
 	if (!(cpu.reg.flag.c)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3772,7 +3772,7 @@ static int inst_jrl_c_imm16(Machine::State& cpu) {
 }
 
 static int inst_jrs_nf0_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(!cpu.reg.flag.f0)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3787,7 +3787,7 @@ static int inst_ld_iy_ba(Machine::State& cpu) {
 }
 
 static int inst_jrl_nc_imm16(Machine::State& cpu) {
-	const uint16_t data0 = cpu_imm16(cpu);
+	const uint16_t data0 = Machine::imm16(cpu);
 	if (!(!cpu.reg.flag.c)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3797,7 +3797,7 @@ static int inst_jrl_nc_imm16(Machine::State& cpu) {
 }
 
 static int inst_jrs_nf1_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(!cpu.reg.flag.f1)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3812,7 +3812,7 @@ static int inst_ld_iy_hl(Machine::State& cpu) {
 }
 
 static int inst_jrl_z_imm16(Machine::State& cpu) {
-	const uint16_t data0 = cpu_imm16(cpu);
+	const uint16_t data0 = Machine::imm16(cpu);
 	if (!(cpu.reg.flag.z)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3822,7 +3822,7 @@ static int inst_jrl_z_imm16(Machine::State& cpu) {
 }
 
 static int inst_jrs_nf2_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(!cpu.reg.flag.f2)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3837,7 +3837,7 @@ static int inst_ld_iy_ix(Machine::State& cpu) {
 }
 
 static int inst_jrl_nz_imm16(Machine::State& cpu) {
-	const uint16_t data0 = cpu_imm16(cpu);
+	const uint16_t data0 = Machine::imm16(cpu);
 	if (!(!cpu.reg.flag.z)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3847,7 +3847,7 @@ static int inst_jrl_nz_imm16(Machine::State& cpu) {
 }
 
 static int inst_jrs_nf3_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(!cpu.reg.flag.f3)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3862,13 +3862,13 @@ static int inst_ld_iy_iy(Machine::State& cpu) {
 }
 
 static int inst_cars_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	op_cars8(cpu, data0);
 	return 5;
 }
 
 static int inst_cars_lt_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(cpu.reg.flag.n != cpu.reg.flag.v)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3883,13 +3883,13 @@ static int inst_ld_sp_ba(Machine::State& cpu) {
 }
 
 static int inst_jrs_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	op_jrs8(cpu, data0);
 	return 2;
 }
 
 static int inst_cars_le_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!((cpu.reg.flag.n != cpu.reg.flag.v) || cpu.reg.flag.z)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3904,13 +3904,13 @@ static int inst_ld_sp_hl(Machine::State& cpu) {
 }
 
 static int inst_carl_imm16(Machine::State& cpu) {
-	const uint16_t data0 = cpu_imm16(cpu);
+	const uint16_t data0 = Machine::imm16(cpu);
 	op_carl16(cpu, data0);
 	return 6;
 }
 
 static int inst_cars_gt_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!((cpu.reg.flag.n == cpu.reg.flag.v) && !cpu.reg.flag.z)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3925,13 +3925,13 @@ static int inst_ld_sp_ix(Machine::State& cpu) {
 }
 
 static int inst_jrl_imm16(Machine::State& cpu) {
-	const uint16_t data0 = cpu_imm16(cpu);
+	const uint16_t data0 = Machine::imm16(cpu);
 	op_jrl16(cpu, data0);
 	return 3;
 }
 
 static int inst_cars_ge_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(cpu.reg.flag.n == cpu.reg.flag.v)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3951,7 +3951,7 @@ static int inst_jp_hl(Machine::State& cpu) {
 }
 
 static int inst_cars_v_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(cpu.reg.flag.v)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3971,7 +3971,7 @@ int clock_inst_djr_nz_rr(Machine::State& cpu) {
 }
 
 static int inst_cars_nv_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(!cpu.reg.flag.v)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -3991,7 +3991,7 @@ static int inst_swap_a(Machine::State& cpu) {
 }
 
 static int inst_cars_p_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(!cpu.reg.flag.n)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -4002,14 +4002,14 @@ static int inst_cars_p_imm8(Machine::State& cpu) {
 
 static int inst_swap_abshl(Machine::State& cpu) {
 	const auto addr0 = calc_absHL(cpu);
-	uint8_t data0 = cpu_read8(cpu, addr0);
+	uint8_t data0 = Machine::read8(cpu, addr0);
 	op_swap8(cpu, data0);
-	cpu_write8(cpu, data0, addr0);
+	Machine::write8(cpu, data0, addr0);
 	return 3;
 }
 
 static int inst_cars_m_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(cpu.reg.flag.n)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -4024,7 +4024,7 @@ int clock_inst_ret(Machine::State& cpu) {
 }
 
 static int inst_cars_f0_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(cpu.reg.flag.f0)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -4044,7 +4044,7 @@ static int inst_rete(Machine::State& cpu) {
 }
 
 static int inst_cars_f1_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(cpu.reg.flag.f1)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -4064,7 +4064,7 @@ int clock_inst_rets(Machine::State& cpu) {
 }
 
 static int inst_cars_f2_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(cpu.reg.flag.f2)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -4080,13 +4080,13 @@ static int inst_ld_ix_sp(Machine::State& cpu) {
 
 static int inst_call_ind16(Machine::State& cpu) {
 	const auto addr0 = calc_ind16(cpu);
-	const uint16_t data0 = cpu_read16(cpu, addr0);
+	const uint16_t data0 = Machine::read16(cpu, addr0);
 	op_call16(cpu, data0);
 	return 8;
 }
 
 static int inst_cars_f3_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(cpu.reg.flag.f3)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -4097,13 +4097,13 @@ static int inst_cars_f3_imm8(Machine::State& cpu) {
 
 static int inst_int_vect(Machine::State& cpu) {
 	const auto addr0 = calc_vect(cpu);
-	const uint16_t data0 = cpu_read16(cpu, addr0);
+	const uint16_t data0 = Machine::read16(cpu, addr0);
 	op_int16(cpu, data0);
 	return 8;
 }
 
 static int inst_cars_nf0_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(!cpu.reg.flag.f0)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -4114,13 +4114,13 @@ static int inst_cars_nf0_imm8(Machine::State& cpu) {
 
 static int inst_jp_vect(Machine::State& cpu) {
 	const auto addr0 = calc_vect(cpu);
-	const uint16_t data0 = cpu_read16(cpu, addr0);
+	const uint16_t data0 = Machine::read16(cpu, addr0);
 	op_jp16(cpu, data0);
 	return 4;
 }
 
 static int inst_cars_nf1_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(!cpu.reg.flag.f1)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -4130,7 +4130,7 @@ static int inst_cars_nf1_imm8(Machine::State& cpu) {
 }
 
 static int inst_cars_nf2_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(!cpu.reg.flag.f2)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -4150,7 +4150,7 @@ int clock_inst_nop(Machine::State& cpu) {
 }
 
 static int inst_cars_nf3_imm8(Machine::State& cpu) {
-	const uint8_t data0 = cpu_imm8(cpu);
+	const uint8_t data0 = Machine::imm8(cpu);
 	if (!(!cpu.reg.flag.f3)) {
 		cpu.reg.cb = cpu.reg.nb;
 		return 3;
@@ -4160,7 +4160,7 @@ static int inst_cars_nf3_imm8(Machine::State& cpu) {
 }
 
 int inst_advance(Machine::State& cpu) {
-	switch (cpu_imm8(cpu)) {
+	switch (Machine::imm8(cpu)) {
 	case 0x00: return inst_add_a_a(cpu);
 	case 0x01: return inst_add_a_b(cpu);
 	case 0x02: return inst_add_a_imm8(cpu);
@@ -4415,7 +4415,7 @@ int inst_advance(Machine::State& cpu) {
 	case 0xFF: return clock_inst_nop(cpu);
 	default: return inst_undefined(cpu);
 	case 0xCE:
-		switch (cpu_imm8(cpu)) {
+		switch (Machine::imm8(cpu)) {
 		case 0x00: return inst_add_a_inddix(cpu);
 		case 0x01: return inst_add_a_inddiy(cpu);
 		case 0x02: return inst_add_a_indiix(cpu);
@@ -4641,7 +4641,7 @@ int inst_advance(Machine::State& cpu) {
 		default: return inst_undefined(cpu);
 		}
 	case 0xCF:
-		switch (cpu_imm8(cpu)) {
+		switch (Machine::imm8(cpu)) {
 		case 0x00: return inst_add_ba_ba(cpu);
 		case 0x01: return inst_add_ba_hl(cpu);
 		case 0x02: return inst_add_ba_ix(cpu);

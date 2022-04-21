@@ -1,0 +1,13 @@
+#!/bin/bash
+cd "$(dirname "$0")"
+
+rm -Rf build-sim
+mkdir build-sim
+cd build-sim
+cmake ..
+cd ..
+
+rm -Rf build-arm
+mkdir build-arm
+cd build-arm
+cmake -DCMAKE_TOOLCHAIN_FILE=$PLAYDATE_SDK_PATH/C_API/buildsupport/arm.cmake ..

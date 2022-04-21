@@ -21,104 +21,54 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 #include "machine.h"
 
-extern "C" uint8_t BIOS[0x2000];
-static Machine::State machine_state;
+void Machine::reset(Machine::State& cpu) {
+	cpu.reg.pc = read16(cpu, 0x0000);
+	cpu.reg.sc = 0xC0;
+	cpu.reg.ep = 0xFF;
+	cpu.reg.xp = 0x00;
+	cpu.reg.yp = 0x00;
+	cpu.reg.nb = 0x01;
 
-extern "C" void cpu_reset() {
-	machine_state.reg.pc = cpu_read16(machine_state, 0x0000);
-	machine_state.reg.sc = 0xC0;
-	machine_state.reg.ep = 0xFF;
-	machine_state.reg.xp = 0x00;
-	machine_state.reg.yp = 0x00;
-	machine_state.reg.nb = 0x01;
+	cpu.status = STATUS_NORMAL;
+	cpu.osc1_overflow = 0;
 
-	machine_state.status = Machine::STATUS_NORMAL;
-	machine_state.osc1_overflow = 0;
-
-	Control::reset(machine_state.ctrl);
-	IRQ::reset(machine_state);
-	LCD::reset(machine_state.lcd);
-	RTC::reset(machine_state);
-	TIM256::reset(machine_state);
-	Blitter::reset(machine_state);
-	Timers::reset(machine_state);
-	Input::reset(machine_state.input);
-	GPIO::reset(machine_state.gpio);
-	Audio::reset(machine_state.audio);
+	Control::reset(cpu.ctrl);
+	IRQ::reset(cpu);
+	LCD::reset(cpu.lcd);
+	RTC::reset(cpu);
+	TIM256::reset(cpu);
+	Blitter::reset(cpu);
+	Timers::reset(cpu);
+	Input::reset(cpu.input);
+	GPIO::reset(cpu.gpio);
+	Audio::reset(cpu.audio);
 }
 
-extern "C" uint8_t* get_eeprom(void) {
-	return machine_state.gpio.eeprom.data;
-}
+void Machine::advance(Machine::State& cpu, int ticks) {
+	cpu.clocks += ticks;
 
-extern "C" void update_inputs(uint16_t value) {
-	Input::update(machine_state, value);
-}
-
-extern "C" void set_sample_rate(int rate) {
-	Audio::setSampleRate(machine_state.audio, rate);
-}
-
-extern "C" int get_audio_samples(int16_t* samples, int len) {
-	static int read_index = 0;
-	int write_index = machine_state.audio.write_index;
-
-	// Determine how many frames are in our audio buffer
-	int frames = write_index - read_index;
-	if (frames < 0) frames += AUDIO_BUFFER_LENGTH;
-
-	// Not enough, return
-	if (frames < len) {
-		return 0;
-	}
-
-	if (read_index + len > AUDIO_BUFFER_LENGTH) {
-		// We need to split the copy
-		int top = AUDIO_BUFFER_LENGTH - write_index;
-		int bottom = len - top;
-
-		memcpy(samples, &machine_state.audio.output[read_index], top);
-		memcpy(samples, &machine_state.audio.output[0], bottom);
-	} else {
-		// Simple copy
-		memcpy(samples, &machine_state.audio.output[read_index], len);
-	}
-
-	read_index = (read_index + len) % AUDIO_BUFFER_LENGTH;
-
-	return 1;
-}
-
-extern "C" uint8_t * cpu_get_cart() {
-	return machine_state.cartridge;
-}
-
-extern "C" void cpu_advance(int ticks) {
-	machine_state.clocks += ticks;
-
-	while (machine_state.clocks > 0) {
-
+	while (cpu.clocks > 0) {
 		// We have an IRQ Scheduled
-		IRQ::manage(machine_state);
+		IRQ::manage(cpu);
 
 		// CPU Core steps
-		if (machine_state.status == Machine::STATUS_NORMAL) {
-			cpu_clock(machine_state, inst_advance(machine_state));
+		if (cpu.status == STATUS_NORMAL) {
+			clock(cpu, inst_advance(cpu));
 		}
 		else {
 			// Eat a cycle
-			cpu_clock(machine_state, 1);
+			clock(cpu, 1);
 		}
 	}
 }
 
-void cpu_clock(Machine::State& cpu, int cycles) {
+void Machine::clock(Machine::State& cpu, int cycles) {
 	const int osc3 = cycles * OSC3_SPEED / CPU_SPEED;	
 	int osc1 = 0;
 
 	cpu.osc1_overflow += osc3 * OSC1_SPEED;
 
-	if (cpu.status <= Machine::STATUS_HALTED) {
+	if (cpu.status <= STATUS_HALTED) {
 		LCD::clock(cpu, osc3);
 		Timers::clock(cpu, osc1, osc3);
 		Audio::clock(cpu, osc3);
@@ -142,7 +92,7 @@ void cpu_clock(Machine::State& cpu, int cycles) {
 	cpu.clocks -= osc3;
 }
 
-static inline uint8_t cpu_read_reg(Machine::State& cpu, uint32_t address) {
+static inline uint8_t read_reg(Machine::State& cpu, uint32_t address) {
 	switch (address & 0xFFF8) {
 	case 0x2000:
 		return Control::read(cpu.ctrl, address);
@@ -180,7 +130,7 @@ static inline uint8_t cpu_read_reg(Machine::State& cpu, uint32_t address) {
 	}
 }
 
-static inline void cpu_write_reg(Machine::State& cpu, uint8_t data, uint32_t address) {
+static inline void write_reg(Machine::State& cpu, uint8_t data, uint32_t address) {
 	switch (address & 0xFFF8) {
 	case 0x2000:
 		Control::write(cpu.ctrl, data, address);
@@ -219,44 +169,44 @@ static inline void cpu_write_reg(Machine::State& cpu, uint8_t data, uint32_t add
 	}
 }
 
-static inline uint8_t cpu_read_cart(Machine::State& cpu, uint32_t address) {
+static inline uint8_t read_cart(Machine::State& cpu, uint32_t address) {
     return cpu.cartridge[address % sizeof(cpu.cartridge)];
 }
 
-static inline void cpu_write_cart(Machine::State& cpu, uint8_t data, uint32_t address) {
+static inline void write_cart(Machine::State& cpu, uint8_t data, uint32_t address) {
 }
 
 
-uint8_t cpu_read(Machine::State& cpu, uint32_t address) {
+uint8_t Machine::read(Machine::State& cpu, uint32_t address) {
 	if (address >= 0x2100) {
 		if (cpu.ctrl.cart_enabled) {
-			return cpu.bus_cap = cpu_read_cart(cpu, address);
+			return cpu.bus_cap = read_cart(cpu, address);
 		}
 		else {
 			return cpu.bus_cap;
 		}
 	}
 	else if (address >= 0x2000) {
-		return cpu.bus_cap = cpu_read_reg(cpu, address);
+		return cpu.bus_cap = read_reg(cpu, address);
 	}
 	else if (address >= 0x1000) {
 		return cpu.bus_cap = cpu.ram[address & 0xFFF];
 	}
 	else {
-		return cpu.bus_cap = BIOS[address];
+		return cpu.bus_cap = cpu.BIOS[address];
 	}
 }
 
-void cpu_write(Machine::State& cpu, uint8_t data, uint32_t address) {
+void Machine::write(Machine::State& cpu, uint8_t data, uint32_t address) {
 	cpu.bus_cap = data;
 	
 	if (address >= 0x2100) {
 		if (cpu.ctrl.cart_enabled) {
-			cpu_write_cart(cpu, data, address);
+			write_cart(cpu, data, address);
 		}
 	}
 	else if (address >= 0x2000) {
-		cpu_write_reg(cpu, data, address);
+		write_reg(cpu, data, address);
 	}
 	else if (address >= 0x1000) {
 		cpu.ram[address & 0xFFF] = data;
@@ -268,52 +218,52 @@ void cpu_write(Machine::State& cpu, uint8_t data, uint32_t address) {
  **/
 
 
-uint8_t cpu_read8(Machine::State& cpu, uint32_t address) {
-	return cpu.bus_cap = cpu_read(cpu, address);
+uint8_t Machine::read8(Machine::State& cpu, uint32_t address) {
+	return cpu.bus_cap = read(cpu, address);
 }
 
-void cpu_write8(Machine::State& cpu, uint8_t data, uint32_t address) {
-	cpu_write(cpu, cpu.bus_cap = data, address);
+void Machine::write8(Machine::State& cpu, uint8_t data, uint32_t address) {
+	write(cpu, cpu.bus_cap = data, address);
 }
 
-uint16_t cpu_read16(Machine::State& cpu, uint32_t address) {
-	uint16_t lo = cpu_read8(cpu, address);
+uint16_t Machine::read16(Machine::State& cpu, uint32_t address) {
+	uint16_t lo = read8(cpu, address);
 	address = ((address + 1) & 0xFFFF) | (address & 0xFF0000);
-	return (cpu_read8(cpu, address) << 8) | lo;
+	return (read8(cpu, address) << 8) | lo;
 }
 
-void cpu_write16(Machine::State& cpu, uint16_t data, uint32_t address) {
-	cpu_write8(cpu, (uint8_t) data, address);
+void Machine::write16(Machine::State& cpu, uint16_t data, uint32_t address) {
+	write8(cpu, (uint8_t) data, address);
 	address = ((address + 1) & 0xFFFF) | (address & 0xFF0000);
-	cpu_write8(cpu, data >> 8, address);
+	write8(cpu, data >> 8, address);
 }
 
-uint8_t cpu_imm8(Machine::State& cpu) {
+uint8_t Machine::imm8(Machine::State& cpu) {
 	auto address = calc_pc(cpu);
 	cpu.reg.pc++;
 
-	return cpu_read8(cpu, address);
+	return read8(cpu, address);
 }
 
-uint16_t cpu_imm16(Machine::State& cpu) {
-	uint8_t lo = cpu_imm8(cpu);
-	return (cpu_imm8(cpu) << 8) | lo;
+uint16_t Machine::imm16(Machine::State& cpu) {
+	uint8_t lo = imm8(cpu);
+	return (imm8(cpu) << 8) | lo;
 }
 
-void cpu_push8(Machine::State& cpu, uint8_t t) {
-	cpu_write8(cpu, t, --cpu.reg.sp);
+void Machine::push8(Machine::State& cpu, uint8_t t) {
+	write8(cpu, t, --cpu.reg.sp);
 }
 
-uint8_t cpu_pop8(Machine::State& cpu) {
-	return cpu_read8(cpu, cpu.reg.sp++);
+uint8_t Machine::pop8(Machine::State& cpu) {
+	return read8(cpu, cpu.reg.sp++);
 }
 
-void cpu_push16(Machine::State& cpu, uint16_t t) {
-	cpu_push8(cpu, t >> 8);
-	cpu_push8(cpu, (uint8_t)t);
+void Machine::push16(Machine::State& cpu, uint16_t t) {
+	push8(cpu, t >> 8);
+	push8(cpu, (uint8_t)t);
 }
 
-uint16_t cpu_pop16(Machine::State& cpu) {
-	uint16_t t = cpu_pop8(cpu);
-	return (cpu_pop8(cpu) << 8) | t;
+uint16_t Machine::pop16(Machine::State& cpu) {
+	uint16_t t = pop8(cpu);
+	return (pop8(cpu) << 8) | t;
 }

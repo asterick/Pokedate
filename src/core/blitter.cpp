@@ -112,7 +112,7 @@ void Blitter::clock(Machine::State& cpu) {
 			for(int y = -y_fine; y < SCREEN_HEIGHT; y += 8, address += size.width) {
 				uint8_t tile = cpu.overlay.map[address];
 				auto tile_address = cpu.blitter.map_base + x_fine + tile * 8;
-				uint8_t graphic = cpu_read8(cpu, tile_address);
+				uint8_t graphic = Machine::read8(cpu, tile_address);
 
 				target.column[x] |= shift(graphic, y);
 			}
@@ -152,8 +152,8 @@ void Blitter::clock(Machine::State& cpu) {
 						continue;
 					}
 
-					uint16_t mask = cpu_read8(cpu, (address^invert) +  0) | (cpu_read8(cpu, (address^invert) +  8) << 8);
-					uint16_t draw = cpu_read8(cpu, (address^invert) + 16) | (cpu_read8(cpu, (address^invert) + 24) << 8);
+					uint16_t mask = Machine::read8(cpu, (address^invert) +  0) | (Machine::read8(cpu, (address^invert) +  8) << 8);
+					uint16_t draw = Machine::read8(cpu, (address^invert) + 16) | (Machine::read8(cpu, (address^invert) + 24) << 8);
 
 					if (sprite.y_flip) {
 						mask = rev(mask);

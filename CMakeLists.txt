@@ -31,7 +31,7 @@ set(PLAYDATE_GAME_DEVICE PokeDate_DEVICE)
 project(${PLAYDATE_GAME_NAME} C CXX ASM)
 
 if (TOOLCHAIN STREQUAL "armgcc")
-	add_executable(${PLAYDATE_GAME_DEVICE} ${SDK}/C_API/buildsupport/setup.c src/core/audio.cc
+	add_executable(${PLAYDATE_GAME_DEVICE} ${SDK}/C_API/buildsupport/setup.c
 		src/core/audio.cpp
 		src/core/blitter.cpp
 		src/core/control.cpp
@@ -45,7 +45,7 @@ if (TOOLCHAIN STREQUAL "armgcc")
 		src/core/rtc.cpp
 		src/core/tim256.cpp
 		src/core/timers.cpp
-		src/main.c
+		src/main.cpp
 	)
 else()
 	add_library(${PLAYDATE_GAME_NAME} SHARED 
@@ -62,7 +62,7 @@ else()
 		src/core/rtc.cpp
 		src/core/tim256.cpp
 		src/core/timers.cpp
-		src/main.c
+		src/main.cpp
 	)
 endif()
 

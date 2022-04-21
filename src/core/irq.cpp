@@ -59,12 +59,12 @@ void IRQ::reset(Machine::State& cpu) {
 static inline void fire(Machine::State& cpu, Vector irq, uint8_t priority) {
 	cpu.status = Machine::STATUS_NORMAL;
 
-	cpu_push8(cpu, cpu.reg.cb);
-	cpu_push16(cpu, cpu.reg.pc);
-	cpu_push8(cpu, cpu.reg.sc);
+	Machine::push8(cpu, cpu.reg.cb);
+	Machine::push16(cpu, cpu.reg.pc);
+	Machine::push8(cpu, cpu.reg.sc);
 
-	cpu_clock(cpu, 7);
-	cpu.reg.pc = cpu_read16(cpu, 2 * (int) irq);
+	Machine::clock(cpu, 7);
+	cpu.reg.pc = Machine::read16(cpu, 2 * (int) irq);
 	cpu.reg.flag.i = priority;
 }
 

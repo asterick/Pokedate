@@ -123,34 +123,32 @@ namespace Machine {
 		 	Blitter::Overlay overlay;
 		};
 
+		uint8_t BIOS[0x2000];
 		uint8_t cartridge[0x200000];
 	};
+
+	// Library functions
+	uint8_t read(Machine::State& cpu, uint32_t address);
+	void write(Machine::State& cpu, uint8_t data, uint32_t address);
+	void reset(Machine::State& cpu);
+	void advance(Machine::State& cpu, int ticks);
+
+	// Clock management
+	void clock(Machine::State& cpu, int cycles);
+
+	// These are memory access helpers
+	uint8_t read8(Machine::State& cpu, uint32_t address);
+	void write8(Machine::State& cpu, uint8_t data, uint32_t address);
+	uint16_t read16(Machine::State& cpu, uint32_t address);
+	void write16(Machine::State& cpu, uint16_t data, uint32_t address);
+	uint8_t imm8(Machine::State& cpu);
+	uint16_t imm16(Machine::State& cpu);
+	void push8(Machine::State& cpu, uint8_t t);
+	uint8_t pop8(Machine::State& cpu);
+	void push16(Machine::State& cpu, uint16_t t);
+	uint16_t pop16(Machine::State& cpu);
 }
 
-// Library functions
-extern "C" uint8_t cpu_read(Machine::State& cpu, uint32_t address);
-extern "C" void cpu_write(Machine::State& cpu, uint8_t data, uint32_t address);
-
-// Bridge functions
-extern "C" void cpu_reset();
-extern "C" void cpu_advance(int ticks);
-extern "C" void set_sample_rate(int rate);
-extern "C" void update_inputs(uint16_t value);
-
-// Clock management
-void cpu_clock(Machine::State& cpu, int cycles);
-
-// These are memory access helpers
-uint8_t cpu_read8(Machine::State& cpu, uint32_t address);
-void cpu_write8(Machine::State& cpu, uint8_t data, uint32_t address);
-uint16_t cpu_read16(Machine::State& cpu, uint32_t address);
-void cpu_write16(Machine::State& cpu, uint16_t data, uint32_t address);
-uint8_t cpu_imm8(Machine::State& cpu);
-uint16_t cpu_imm16(Machine::State& cpu);
-void cpu_push8(Machine::State& cpu, uint8_t t);
-uint8_t cpu_pop8(Machine::State& cpu);
-void cpu_push16(Machine::State& cpu, uint16_t t);
-uint16_t cpu_pop16(Machine::State& cpu);
 int inst_advance(Machine::State& cpu);
 
 static inline uint32_t calc_pc(Machine::State& cpu) {

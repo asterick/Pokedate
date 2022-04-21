@@ -3,11 +3,11 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-build
+.vscode
+build-sim
+build-arm
 PokeDate.pdx
-pdex.dll
-pdex.bin
-pdex.so
+pdex.*
 
 # User-specific files
 *.rsuser

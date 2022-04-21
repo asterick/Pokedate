@@ -9,22 +9,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "pd_api.h"
+#include "machine.h"
 
-static const int OSC3_SPEED = 4000000;
+using namespace Machine;
+
+static Machine::State machine_state;
+
+extern "C" {
+	#include "pd_api.h"
+};
+
 static const int DISPLAY_ROW_STRIDE = 52;
 #define BOX_CELLS 4
 
 static PlaydateAPI* pd = NULL;
 static unsigned int last_time;
 static int power_pressed;
-uint8_t BIOS[0x2000];
-
-void cpu_reset();
-void update_inputs(uint16_t value);
-void set_sample_rate(int rate);
-uint8_t* cpu_get_cart();
-uint8_t* get_eeprom(void);
 
 static const uint8_t dither[4][4] = {
 	{  15, 195,  60, 240 },
@@ -33,9 +33,33 @@ static const uint8_t dither[4][4] = {
 	{ 165, 105, 150,  90 },
 };
 
-static int audioSource(void* context, int16_t* left, int16_t* right, int len) {
-	//pd->system->logToConsole("%i", len);
-	//return get_audio_samples(left, len);
+static int audioSource(void* context, int16_t* samples, int16_t* _, int len) {
+	static int read_index = 0;
+	int write_index = machine_state.audio.write_index;
+
+	// Determine how many frames are in our audio buffer
+	int frames = write_index - read_index;
+	if (frames < 0) frames += AUDIO_BUFFER_LENGTH;
+
+	// Not enough, return
+	if (frames < len) {
+		return 0;
+	}
+
+	if (read_index + len > AUDIO_BUFFER_LENGTH) {
+		// We need to split the copy
+		int top = AUDIO_BUFFER_LENGTH - write_index;
+		int bottom = len - top;
+
+		memcpy(samples, &machine_state.audio.output[read_index], top);
+		memcpy(samples, &machine_state.audio.output[0], bottom);
+	} else {
+		// Simple copy
+		memcpy(samples, &machine_state.audio.output[read_index], len);
+	}
+
+	read_index = (read_index + len) % AUDIO_BUFFER_LENGTH;
+
 	return 1;
 }
 
@@ -53,7 +77,7 @@ void upsample(uint8_t* in, uint8_t* out) {
 	}
 }
 
-void flip_screen(uint8_t* frame_data) {
+extern "C" void flip_screen(uint8_t* frame_data) {
 
 	// Do a 4 cell box average
 	static uint8_t box[BOX_CELLS][64*96] = { {0} };
@@ -73,12 +97,12 @@ void flip_screen(uint8_t* frame_data) {
 
 	// Upscale our image
 	uint8_t upscale[64 * 3][96 * 3];
-	upsample(sum, upscale);
+	upsample(&sum[0][0], &upscale[0][0]);
 
 	// Dither to display
 	uint8_t* frame = pd->graphics->getFrame();
 	uint8_t* draw_target = &frame[52 * (240 - 64 * 3) / 2 + (400 - 96 * 3) / 8 / 2];
-	uint8_t* source = upscale;
+	uint8_t* source = &upscale[0][0];
 
 	if (frame == NULL) return;
 
@@ -101,7 +125,7 @@ void flip_screen(uint8_t* frame_data) {
 static void initialize(void)
 {
 	// Configure emulator
-	set_sample_rate(44100);
+	Audio::setSampleRate(machine_state.audio, 44100);
 	last_time = pd->system->getCurrentTimeMilliseconds();
 
 	// Load BIOS image
@@ -112,36 +136,36 @@ static void initialize(void)
 		return;
 	}
 
-	pd->file->read(fd, BIOS, sizeof(BIOS));
+	pd->file->read(fd, machine_state.BIOS, sizeof(machine_state.BIOS));
 	pd->file->close(fd);
 
 
 	// Load a game
 	fd = pd->file->open("game.min", kFileRead);
 	if (fd != NULL) {
-		pd->file->read(fd, cpu_get_cart(), 0x200000);
+		pd->file->read(fd, machine_state.cartridge, 0x200000);
 		pd->file->close(fd);
 	}
 
 	fd = pd->file->open("game.min", kFileRead);
 	if (fd != NULL) {
-		pd->file->read(fd, cpu_get_cart(), 0x200000);
+		pd->file->read(fd, machine_state.cartridge, 0x200000);
 		pd->file->close(fd);
 	}
 
 	fd = pd->file->open("eeprom.bin", kFileReadData);
 	if (fd != NULL) {
-		pd->file->read(fd, get_eeprom(), 0x2000);
+		pd->file->read(fd, machine_state.gpio.eeprom.data, 0x2000);
 		pd->file->close(fd);
 	}
 
-	cpu_reset();
+	Machine::reset(machine_state);
 }
 
 static void preserve(void) {
 	SDFile* fd = pd->file->open("eeprom.bin", kFileWrite);
 	if (fd != NULL) {
-		pd->file->write(fd, get_eeprom(), 0x2000);
+		pd->file->write(fd, machine_state.gpio.eeprom.data, 0x2000);
 		pd->file->close(fd);
 	}
 	else {
@@ -181,12 +205,12 @@ static int update(void* ud)
 	
 	if (power_pressed > 0) {
 		input_state &= ~0b10000000;
-		power_pressed -= (now - ticks);
+		power_pressed -= (now - last_time);
 	}
-	update_inputs(input_state);
+	Input::update(machine_state, input_state);
 
 	detectShake();
-	cpu_advance(ticks);
+	Machine::advance(machine_state, ticks);
 
 	return 1;
 }
