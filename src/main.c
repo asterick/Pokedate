@@ -87,7 +87,7 @@ void flip_screen(uint8_t* frame_data) {
 			uint8_t byte = 0;
 
 			for (uint8_t b = 0; b < 8; b++) {
-				if (*(source++) >= dither[(x+b) & 3][y & 3]) byte |= 0x80 >> b;
+				if (*(source++) - dither[(x+b) & 3][y & 3] >= 0) byte |= 0x80 >> b;
 			}
 
 			*(draw_target++) = byte;
