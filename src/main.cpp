@@ -24,7 +24,7 @@ static const int DISPLAY_ROW_STRIDE = 52;
 
 static PlaydateAPI* pd = NULL;
 static unsigned int last_time;
-static int power_pressed;
+static bool power_pressed = false;
 static bool cart_inserted = false;
 
 static const uint8_t dither[4][4] = {
@@ -169,10 +169,6 @@ static bool detectShake(void) {
 	return false;
 }
 
-static void pressPower(void* userdata) {
-	power_pressed = 100;
-}
-
 int reset(lua_State *L) {
 	Machine::reset(machine_state);
 	return 0;
@@ -186,11 +182,35 @@ int load(lua_State *L) {
 		return 0;
 	}
 
-	pd->system->logToConsole("LOAD: %s", fn);
 
-	// TODO ACTUALLY LOAD HERE
+	// Load our cartridge
+	SDFile* fd = pd->file->open(fn, kFileReadData);
+
+	if (fd == NULL) {
+		return 0;
+	}
+
+	int size = pd->file->read(fd, machine_state.cartridge, sizeof(machine_state.cartridge));
+	int stride = 1;
+
+	while (stride < size) stride <<= 1;
+	pd->system->logToConsole("%06x %06x", size, stride);
+
+	int index = stride;
+
+	while (index < sizeof(machine_state.cartridge)) {
+		memcpy(&machine_state.cartridge[index], &machine_state.cartridge[0], size);
+		index += stride;
+	}
+
+	pd->file->close(fd);
 
 	cart_inserted = true;
+	return 0;
+}
+
+int powerButton(lua_State *L) {
+	power_pressed = pd->lua->getArgBool(1);
 	return 0;
 }
 
@@ -217,12 +237,8 @@ int step(lua_State *L) {
 	if (pushed & kButtonLeft)  input_state &= ~0b00100000;
 	if (pushed & kButtonRight) input_state &= ~0b01000000;
 
-	if (power_pressed > 0) {
-		input_state &= ~0b10000000;
-		power_pressed -= ms;
-	}
-
-	if (cart_inserted) input_state &= ~0b1000000000;
+	if (power_pressed)         input_state &= ~0b0010000000;
+	if (cart_inserted)         input_state &= ~0b1000000000;
 
 	Input::update(machine_state, input_state);
 
@@ -245,7 +261,6 @@ int eventHandler(PlaydateAPI* playdate, PDSystemEvent event, uint32_t arg)
 		pd = playdate;
 		pd->display->setRefreshRate(0); // run as fast as possible
 		pd->system->setPeripheralsEnabled(kAccelerometer);
-		pd->system->addMenuItem("Press Power", pressPower, NULL);
 		pd->sound->addSource(audioSource, NULL, 0);
 
 		initialize();
@@ -261,6 +276,8 @@ int eventHandler(PlaydateAPI* playdate, PDSystemEvent event, uint32_t arg)
 		pd->lua->addFunction(load, "minimon.load", &err);
 		if (*err) pd->system->error("Cannot add function: %s", err);
 		pd->lua->addFunction(eject, "minimon.eject", &err);
+		if (*err) pd->system->error("Cannot add function: %s", err);
+		pd->lua->addFunction(powerButton, "minimon.powerButton", &err);
 		if (*err) pd->system->error("Cannot add function: %s", err);
 
 		break;

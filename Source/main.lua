@@ -1,5 +1,9 @@
 local menu = playdate.getSystemMenu()
-local time = playdate.getCurrentTimeMilliseconds()
+local cartMenuItem = nil
+
+--[[
+    Helper functions
+]]
 
 function string:split(delimiter)
     result = {}
@@ -22,40 +26,91 @@ function string:join(table)
 end
 
 --[[
-This should be assigned to playdate.update when you would like the emulator to run freely
+    This is our running state
 ]]
 
-function running()
-    local now = playdate.getCurrentTimeMilliseconds()
-    minimon.step(now - time);
-    time = now
+function run()
+    local time = playdate.getCurrentTimeMilliseconds()
+
+    return function()
+        local now = playdate.getCurrentTimeMilliseconds()
+        local ms = now - time
+
+        minimon.step(ms);
+        time = now
+    end
+end
+
+--[[
+    This toggles power for 100ms
+]]
+
+function pressPower()
+    local update = playdate.update
+    local time = playdate.getCurrentTimeMilliseconds() + 1000
+
+    print("True")
+    minimon.powerButton(true)
+    return function()
+        if playdate.getCurrentTimeMilliseconds() >= time then
+            print("Done")
+            minimon.powerButton(false)
+            playdate.update = update
+        end
+        --update()
+    end
 end
 
 --[[
     This is our loading state
 ]]
-function load_file()
+function loadMenu()
     local root = "/roms/"
     local files = playdate.file.listFiles(root)
 
-    function change_dir(folder)
+    local function changeDir(folder)
         playdate.graphics.drawRoundRect( 5, 5, 390, 230, 3)
     end
 
-    function load_game(path)
+    local function loadGame(path)
+        minimon.load(path)
+        playdate.update = run()
     end
 
-    change_dir(root)
-
     return function ()
-        for key, value in pairs(string) do
-            playdate.graphics.drawText(key .. " " .. value, 5, key * 30)
-        end
+        loadGame("/roms/Pokemon Race Mini (J).min")
     end
 end
 
-menu:addMenuItem("Load Game", function()
-    playdate.update=load_file()
+--[[
+    Setup Context Menu
+]]
+
+menu:addMenuItem("Press Power", function()
+    playdate.update = pressPower()
 end)
 
-playdate.update = running
+function addEjectMenu()
+    menu:removeMenuItem(cartMenuItem)
+
+    cartMenuItem = menu:addMenuItem("Eject", 1, function (...)
+        minimon.eject()
+        addLoadMenu()
+    end)
+end
+
+function addLoadMenu()
+    if (cartMenuItem ~= nil) then
+        menu:removeMenuItem(cartMenuItem)
+    end
+
+    cartMenuItem = menu:addMenuItem("Load", 1, function (...)
+        playdate.update = loadMenu()
+        addEjectMenu()
+    end)
+end
+
+addLoadMenu()
+menu:addMenuItem("Reset", minimon.reset)
+
+playdate.update = run()
