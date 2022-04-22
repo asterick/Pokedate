@@ -63,7 +63,7 @@ void Machine::advance(Machine::State& cpu, int ticks) {
 }
 
 void Machine::clock(Machine::State& cpu, int cycles) {
-	const int osc3 = cycles * OSC3_SPEED / CPU_SPEED;	
+	const int osc3 = cycles * OSC3_SPEED / CPU_SPEED;
 	int osc1 = 0;
 
 	cpu.osc1_overflow += osc3 * OSC1_SPEED;
@@ -93,78 +93,82 @@ void Machine::clock(Machine::State& cpu, int cycles) {
 }
 
 static inline uint8_t read_reg(Machine::State& cpu, uint32_t address) {
-	switch (address & 0xFFF8) {
-	case 0x2000:
+	switch (address) {
+	case 0x2000 ... 0x2002:
 		return Control::read(cpu.ctrl, address);
-	case 0x2008:
+	case 0x2008 ... 0x200B:
 		return RTC::read(cpu, address);
-	case 0x2020: case 0x2028:
+	case 0x2020 ... 0x202A:
 		return IRQ::read(cpu, address);
-	case 0x2040:
+	case 0x2040 ... 0x2041:
 		return TIM256::read(cpu, address);
-	case 0x2050:
+	case 0x2050 ... 0x2055:
 		return Input::read(cpu.input, address);
-	case 0x2060:
+	case 0x2060 ... 0x2062:
 		return GPIO::read(cpu.gpio, address);
-	case 0x2070:
+	case 0x2070 ... 0x2071:
 		return Audio::read(cpu.audio, address);
 	case 0x2010:
 		// This should be handled properly
 		return 0b010000;
-	case 0x20F8:
+	case 0x20FE ... 0x20FF:
 		if (cpu.ctrl.lcd_enabled) {
 			return LCD::read(cpu.lcd, address);
 		} else {
 			return cpu.bus_cap;
 		}
 		break ;
-	case 0x2080: case 0x2088:
-	case 0x20F0:
+	case 0x2080 ... 0x208F:
+	case 0x20F0 ... 0x20F8:
 		return Blitter::read(cpu, address);
-	case 0x2018:
-	case 0x2030:
-	case 0x2048:
+	case 0x2018 ... 0x201D:
+	case 0x2030 ... 0x203F:
+	case 0x2048 ... 0x204F:
 		return Timers::read(cpu, address);
 	default:
+		//dprintf("Unhandled register read %x", address);
 		return cpu.bus_cap;
 	}
 }
 
 static inline void write_reg(Machine::State& cpu, uint8_t data, uint32_t address) {
-	switch (address & 0xFFF8) {
-	case 0x2000:
+	switch (address) {
+	case 0x2000 ... 0x2002:
 		Control::write(cpu.ctrl, data, address);
 		break ;
-	case 0x2008:
+	case 0x2008 ... 0x200B:
 		RTC::write(cpu, data, address);
 		break ;
-	case 0x2020: case 0x2028:
+	case 0x2020 ... 0x202A:
 		IRQ::write(cpu, data, address);
 		break ;
-	case 0x2040:
+	case 0x2040 ... 0x2041:
 		TIM256::write(cpu, data, address);
 		break ;
-	case 0x2050:
+	case 0x2050 ... 0x2055:
 		Input::write(cpu.input, data, address);
 		break ;
-	case 0x2060:
+	case 0x2060 ... 0x2062:
 		GPIO::write(cpu.gpio, data, address);
 		break ;
-	case 0x2070:
+	case 0x2070 ... 0x2071:
 		Audio::write(cpu.audio, data, address);
 		break ;
-	case 0x2080: case 0x2088: case 0x20F0:
+	case 0x2080 ... 0x208A:
 		Blitter::write(cpu, data, address);
 		break ;
-	case 0x20F8:
+	case 0x20FE ... 0x20FF:
 		if (cpu.ctrl.lcd_enabled) {
 			LCD::write(cpu.lcd, data, address);
 		}
 		break ;
-	case 0x2018: case 0x2030: case 0x2048:
+	case 0x2018 ... 0x201D:
+	case 0x2030 ... 0x203F:
+	case 0x2048 ... 0x204F:
 		Timers::write(cpu, data, address);
 		break ;
 	default:
+		//dprintf("Unhandled register write %x: %x", address, data);
 		break ;
 	}
 }
@@ -178,38 +182,39 @@ static inline void write_cart(Machine::State& cpu, uint8_t data, uint32_t addres
 
 
 uint8_t Machine::read(Machine::State& cpu, uint32_t address) {
-	if (address >= 0x2100) {
-		if (cpu.ctrl.cart_enabled) {
-			return cpu.bus_cap = read_cart(cpu, address);
-		}
-		else {
-			return cpu.bus_cap;
-		}
-	}
-	else if (address >= 0x2000) {
-		return cpu.bus_cap = read_reg(cpu, address);
-	}
-	else if (address >= 0x1000) {
-		return cpu.bus_cap = cpu.ram[address & 0xFFF];
-	}
-	else {
-		return cpu.bus_cap = cpu.BIOS[address];
+switch (address) {
+		case 0x0000 ... 0x0FFF:
+			return cpu.bus_cap = cpu.BIOS[address];
+		case 0x1000 ... 0x1FFF:
+			return cpu.bus_cap = cpu.ram[address & 0xFFF];
+		case 0x2000 ... 0x20FF:
+			return cpu.bus_cap = read_reg(cpu, address);
+		default:
+			if (cpu.ctrl.cart_enabled) {
+				return cpu.bus_cap = read_cart(cpu, address);
+			} else {
+				return cpu.bus_cap;
+			}
 	}
 }
 
 void Machine::write(Machine::State& cpu, uint8_t data, uint32_t address) {
 	cpu.bus_cap = data;
-	
-	if (address >= 0x2100) {
-		if (cpu.ctrl.cart_enabled) {
-			write_cart(cpu, data, address);
-		}
-	}
-	else if (address >= 0x2000) {
-		write_reg(cpu, data, address);
-	}
-	else if (address >= 0x1000) {
-		cpu.ram[address & 0xFFF] = data;
+
+	switch (address) {
+		case 0x0000 ... 0x0FFF:
+			break ;
+		case 0x1000 ... 0x1FFF:
+			cpu.ram[address & 0xFFF] = data;
+			break ;
+		case 0x2000 ... 0x20FF:
+			write_reg(cpu, data, address);
+			break ;
+		default:
+			if (cpu.ctrl.cart_enabled) {
+				write_cart(cpu, data, address);
+			}
+			break ;
 	}
 }
 

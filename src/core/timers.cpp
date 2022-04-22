@@ -30,7 +30,7 @@ struct TimerIRQ {
 static const TimerIRQ irqs[] = {
 	{ IRQ::IRQ_TIM0, IRQ::IRQ_TIM1,                -1 },
 	{ IRQ::IRQ_TIM2, IRQ::IRQ_TIM3,                -1 },
-	{            -1, IRQ::IRQ_TIM5, IRQ::IRQ_TIM5_CMP } 
+	{            -1, IRQ::IRQ_TIM5, IRQ::IRQ_TIM5_CMP }
 };
 
 static const uint8_t TIMER_MASK[] = {
@@ -80,7 +80,7 @@ static inline void compare(Machine::State& cpu, int vec, int ticks, int compare,
 	int compare_ticks = count - compare;
 
 	if (compare_ticks < 0) compare_ticks += preset + 1;
-		
+
 	if (compare_ticks < ticks) {
 		IRQ::trigger(cpu, (IRQ::Vector) vec);
 	}
@@ -92,11 +92,11 @@ static inline void process_timer(Machine::State& cpu, int osc1, int osc3, Timer&
 
 		int adv = ticks(cpu.timers, timer.lo_clock_source, timer.lo_clock_ctrl, timer.lo_clock_ratio, osc1, osc3);
 		int count = timer.count - adv;
-		
+
 		if (count < 0) {
 			irq(cpu, vects.hi_underflow);
 			do {
-				count += timer.preset + 1;	
+				count += timer.preset + 1;
 			} while (count < 0);
 		}
 
@@ -126,7 +126,7 @@ static inline void process_timer(Machine::State& cpu, int osc1, int osc3, Timer&
 			if (count < 0) {
 				irq(cpu, vects.hi_underflow);
 				do {
-					count += timer.preset_bytes[1] + 1;	
+					count += timer.preset_bytes[1] + 1;
 				} while (count < 0);
 			}
 			timer.count_bytes[1] = count;
@@ -170,7 +170,7 @@ uint8_t Timers::read(Machine::State& cpu, uint32_t address) {
 			| (cpu.timers.timer[2].hi_clock_ctrl ? 0b10000000 : 0);
 
 	case 0x2019:
-		return 0	
+		return 0
 			| (cpu.timers.osc3_enable ? 0b00100000 : 0)
 			| (cpu.timers.osc1_enable ? 0b00010000 : 0)
 
@@ -186,17 +186,17 @@ uint8_t Timers::read(Machine::State& cpu, uint32_t address) {
 			| (cpu.timers.timer[2].hi_clock_source ? 0b10 : 0);
 
 	// Timer 0/1
-	case 0x2030: case 0x2031: case 0x2032: case 0x2033: case 0x2034: case 0x2035: case 0x2036: case 0x2037:
+	case 0x2030 ... 0x2037:
 		return cpu.timers.timer[0].bytes[address & 0b111];
 
 	// Timer 2/3
-	case 0x2038: case 0x2039: case 0x203A: case 0x203B: case 0x203C: case 0x203D: case 0x203E: case 0x203F:
+	case 0x2038 ... 0x203F:
 		return cpu.timers.timer[1].bytes[address & 0b111];
 
 	// Timer 4/5
-	case 0x2048: case 0x2049: case 0x204A: case 0x204B: case 0x204C: case 0x204D: case 0x204E: case 0x204F:
+	case 0x2048 ... 0x204F:
 		return cpu.timers.timer[2].bytes[address & 0b111];
-	
+
 	default:
 		return 0xCD;
 	}
@@ -263,29 +263,29 @@ void Timers::write(Machine::State& cpu, uint8_t data, uint32_t address) {
 		break ;
 
 	// Timer 0/1
-	case 0x2030: case 0x2031:
+	case 0x2030 ... 0x2031:
 		cpu.timers.timer[0].bytes[address & 0b111] = data & TIMER_MASK[address & 0b111];
 		setup_timer(cpu.timers.timer[0]);
 		break ;
-	case 0x2032: case 0x2033: case 0x34: case 0x2035:
+	case 0x2032 ... 0x2035:
 		cpu.timers.timer[0].bytes[address & 0b111] = data & TIMER_MASK[address & 0b111];
 		break ;
 
 	// Timer 2/3
-	case 0x2038: case 0x2039:
+	case 0x2038 ... 0x2039:
 		cpu.timers.timer[1].bytes[address & 0b111] = data & TIMER_MASK[address & 0b111];
 		setup_timer(cpu.timers.timer[1]);
 		break ;
-	case 0x203A: case 0x203B: case 0x203C: case 0x203D:
+	case 0x203A ... 0x203D:
 		cpu.timers.timer[1].bytes[address & 0b111] = data & TIMER_MASK[address & 0b111];
 		break ;
 
 	// Timer 4/5
-	case 0x2048: case 0x2049:
+	case 0x2048 ... 0x2049:
 		cpu.timers.timer[2].bytes[address & 0b111] = data & TIMER_MASK[address & 0b111];
 		setup_timer(cpu.timers.timer[2]);
 		break ;
-	case 0x204A: case 0x204B: case 0x204C: case 0x204D:
+	case 0x204A ... 0x204D:
 		cpu.timers.timer[2].bytes[address & 0b111] = data & TIMER_MASK[address & 0b111];
 		break ;
 	}

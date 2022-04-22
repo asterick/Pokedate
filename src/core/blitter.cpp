@@ -132,7 +132,7 @@ void Blitter::clock(Machine::State& cpu) {
 	if (cpu.blitter.enable_sprites) {
 		for (int i = 23; i >= 0; i--) {
 			Sprite& sprite = cpu.overlay.oam[i];
-		
+
 			if (!sprite.enable) continue ;
 
 			auto address = cpu.blitter.sprite_base + sprite.tile * (8 * 8);
@@ -208,9 +208,9 @@ uint8_t Blitter::read(Machine::State& cpu, uint32_t address) {
 			return cpu.blitter.scroll_y;
 		case 0x2086:
 			return cpu.blitter.scroll_x;
-		case 0x2082: case 0x2083: case 0x2084:
+		case 0x2082 ... 0x2084:
 			return cpu.blitter.map_bytes[address - 0x2082];
-		case 0x2087: case 0x2088: case 0x2089:
+		case 0x2087 ... 0x2089:
 			return cpu.blitter.sprite_bytes[address - 0x2087];
 		case 0x208A:
 			return LCD::get_scanline(cpu.lcd);
@@ -231,7 +231,7 @@ void Blitter::write(Machine::State& cpu, uint8_t data, uint32_t address) {
 		case 0x2081:
 			cpu.blitter.rate_control = data;
 			break ;
-		case 0x2082: case 0x2083: case 0x2084:
+		case 0x2082 ... 0x2084:
 			cpu.blitter.map_bytes[address - 0x2082] = data;
 			break ;
 		case 0x2085:
@@ -240,7 +240,7 @@ void Blitter::write(Machine::State& cpu, uint8_t data, uint32_t address) {
 		case 0x2086:
 			cpu.blitter.scroll_x = data;
 			break ;
-		case 0x2087: case 0x2088: case 0x2089:
+		case 0x2087 ... 0x2089:
 			cpu.blitter.sprite_bytes[address - 0x2087] = data;
 			break ;
 	}
