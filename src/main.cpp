@@ -44,16 +44,12 @@ static int audioSource(void* context, int16_t* samples, int16_t* _, int len) {
 
 	// Not enough, return
 	if (frames < len) {
-		return 0;
-	}
-
-	for (int i = 0; i < len / 2; i++) {
-		samples[i] = samples[len-i-1] = i << 6;
+		//return 0;
 	}
 
 	// Convert to memcpy eventually
 	while (len-- > 0) {
-		*(samples++) = 0;//machine_state.audio.output[read_index++];
+		*(samples++) = machine_state.audio.output[read_index];
 		read_index = (read_index + 1) % AUDIO_BUFFER_LENGTH;
 	}
 
