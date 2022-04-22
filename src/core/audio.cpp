@@ -36,7 +36,7 @@ void Audio::clock(Machine::State& state, int osc3) {
 	Audio::State& audio = state.audio;
 
 	audio.sampleError += osc3 * audio.sampleRate;
-	while (audio.sampleError > OSC3_SPEED) {
+	while (audio.sampleError >= OSC3_SPEED) {
 		Timers::Timer& timer = state.timers.timer[2];
 		int16_t volume;
 

@@ -212,10 +212,6 @@ int eject(lua_State *L) {
 }
 
 int step(lua_State *L) {
-	// Calculate elapsed time
-	unsigned int ms = pd->lua->getArgInt(1);
-	unsigned int ticks = ms * OSC3_SPEED / 1000;
-
 	// Update inputs
 	uint16_t input_state = 0b1111111111;
 	PDButtons pushed;
@@ -237,6 +233,9 @@ int step(lua_State *L) {
 	if (detectShake()) {
 		IRQ::trigger(machine_state, IRQ::IRQ_SHOCK);
 	}
+
+	// Calculate elapsed time
+	unsigned int ticks = pd->lua->getArgInt(1) * (OSC3_SPEED / 1000);
 
 	Machine::advance(machine_state, ticks);
 

@@ -222,7 +222,6 @@ void Machine::write(Machine::State& cpu, uint8_t data, uint32_t address) {
  * S1C88 Memory access helper functions
  **/
 
-
 uint8_t Machine::read8(Machine::State& cpu, uint32_t address) {
 	return cpu.bus_cap = read(cpu, address);
 }
