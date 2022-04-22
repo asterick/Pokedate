@@ -62,7 +62,7 @@ void Audio::clock(Machine::State& state, int osc3) {
 
 
 		audio.output[audio.write_index++] = volume;
-		
+
 		if (audio.write_index >= AUDIO_BUFFER_LENGTH) {
 			audio.write_index = 0;
 		}

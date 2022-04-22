@@ -57,15 +57,15 @@ void Input::write(Input::State& inputs, uint8_t data, uint32_t address) {
 	switch (address) {
 	case 0x2050:
 		inputs.bytes[0] = data;
-		break ;	
+		break ;
 	case 0x2051:
 		inputs.bytes[1] = data & 0b00000011;
-		break ;	
+		break ;
 	case 0x2054:
 		inputs.bytes[4] = data & 0b01110111;
-		break ;	
+		break ;
 	case 0x2055:
 		inputs.bytes[5] = data & 0b00000111;
-		break ;	
+		break ;
 	}
 }
