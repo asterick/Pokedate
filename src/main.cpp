@@ -35,7 +35,7 @@ static const uint8_t dither[4][4] = {
 };
 
 static int audioSource(void* context, int16_t* samples, int16_t* _, int len) {
-	static int read_index = 0;
+	static uint16_t read_index = 0;
 	int write_index = machine_state.audio.write_index;
 
 	// Determine how many frames are in our audio buffer
@@ -47,19 +47,15 @@ static int audioSource(void* context, int16_t* samples, int16_t* _, int len) {
 		return 0;
 	}
 
-	if (read_index + len > AUDIO_BUFFER_LENGTH) {
-		// We need to split the copy
-		int top = AUDIO_BUFFER_LENGTH - write_index;
-		int bottom = len - top;
-
-		memcpy(samples, &machine_state.audio.output[read_index], top);
-		memcpy(samples, &machine_state.audio.output[0], bottom);
-	} else {
-		// Simple copy
-		memcpy(samples, &machine_state.audio.output[read_index], len);
+	for (int i = 0; i < len / 2; i++) {
+		samples[i] = samples[len-i-1] = i << 6;
 	}
 
-	read_index = (read_index + len) % AUDIO_BUFFER_LENGTH;
+	// Convert to memcpy eventually
+	while (len-- > 0) {
+		*(samples++) = 0;//machine_state.audio.output[read_index++];
+		read_index = (read_index + 1) % AUDIO_BUFFER_LENGTH;
+	}
 
 	return 1;
 }
@@ -269,16 +265,16 @@ int eventHandler(PlaydateAPI* playdate, PDSystemEvent event, uint32_t arg)
 	case kEventInitLua:
 		const char* err;
 
-		pd->lua->addFunction(step, "minimon.step", &err);
-		if (*err) pd->system->error("Cannot add function: %s", err);
-		pd->lua->addFunction(reset, "minimon.reset", &err);
-		if (*err) pd->system->error("Cannot add function: %s", err);
-		pd->lua->addFunction(load, "minimon.load", &err);
-		if (*err) pd->system->error("Cannot add function: %s", err);
-		pd->lua->addFunction(eject, "minimon.eject", &err);
-		if (*err) pd->system->error("Cannot add function: %s", err);
-		pd->lua->addFunction(powerButton, "minimon.powerButton", &err);
-		if (*err) pd->system->error("Cannot add function: %s", err);
+		playdate->lua->addFunction(step, "minimon.step", &err);
+		if (*err) playdate->system->error("Cannot add function: %s", err);
+		playdate->lua->addFunction(reset, "minimon.reset", &err);
+		if (*err) playdate->system->error("Cannot add function: %s", err);
+		playdate->lua->addFunction(load, "minimon.load", &err);
+		if (*err) playdate->system->error("Cannot add function: %s", err);
+		playdate->lua->addFunction(eject, "minimon.eject", &err);
+		if (*err) playdate->system->error("Cannot add function: %s", err);
+		playdate->lua->addFunction(powerButton, "minimon.powerButton", &err);
+		if (*err) playdate->system->error("Cannot add function: %s", err);
 
 		break;
 

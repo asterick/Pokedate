@@ -38,7 +38,7 @@ void Audio::clock(Machine::State& state, int osc3) {
 	audio.sampleError += osc3 * audio.sampleRate;
 	while (audio.sampleError > OSC3_SPEED) {
 		Timers::Timer& timer = state.timers.timer[2];
-		float volume;
+		int16_t volume;
 
 		if (!audio.enable) {
 			switch (audio.volume) {
@@ -57,9 +57,8 @@ void Audio::clock(Machine::State& state, int osc3) {
 				volume = -volume;
 			}
 		} else {
-			volume = 0.0;
+			volume = 0;
 		}
-
 
 		audio.output[audio.write_index++] = volume;
 

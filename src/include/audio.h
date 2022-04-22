@@ -22,7 +22,8 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 namespace Machine { struct State; };
 
-static const int AUDIO_BUFFER_LENGTH = 1024; // this is 4x what we need
+// This should be significantly more than we actually need
+static const int AUDIO_BUFFER_LENGTH = 0x1000;
 
 namespace Audio {
 	struct State {
@@ -31,7 +32,7 @@ namespace Audio {
 
 		int16_t output[AUDIO_BUFFER_LENGTH];
 		int write_index;
-	
+
 		int sampleRate;
 		int sampleAccumulator;
 		int sampleCount;

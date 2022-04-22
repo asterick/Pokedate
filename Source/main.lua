@@ -137,8 +137,10 @@ function loadMenu()
     local ROW_HEIGHT = 24
     local LIST_HEIGHT = 196
     local offset = 0
+    local prev_crank = playdate.getCrankPosition()
 
     return function ()
+        -- Select item with buttons
         if playdate.buttonJustPressed(playdate.kButtonUp) then
             selected = (selected + #files - 1) % #files
         elseif playdate.buttonJustPressed(playdate.kButtonDown) then
@@ -148,6 +150,13 @@ function loadMenu()
         elseif playdate.buttonJustPressed(playdate.kButtonB) then
             playdate.update = run()
         end
+
+        -- Select item with crank
+        local crank = playdate.getCrankPosition()
+        local crank_delta = (crank - prev_crank) // 6
+        prev_crank = crank
+
+        selected = (selected + crank_delta + #files) % #files
 
         -- Redraw menu
         local gfx <const> = playdate.graphics
@@ -166,7 +175,9 @@ function loadMenu()
 
         local delta = targetOffset - offset
         if delta > 0 then
-            offset = (offset + math.log(delta) / math.log(1.5)) // 1
+            offset = (offset + math.log(delta) / math.log(2)) // 1
+        elseif delta < 0 then
+            offset = (offset - math.log(-delta) / math.log(2)) // 1
         end
 
         -- File menu contents
