@@ -44,7 +44,7 @@ static int audioSource(void* context, int16_t* samples, int16_t* _, int len) {
 
 	// Not enough, return
 	if (frames < len) {
-		//return 0;
+		return 0;
 	}
 
 	// Convert to memcpy eventually
@@ -53,7 +53,7 @@ static int audioSource(void* context, int16_t* samples, int16_t* _, int len) {
 		read_index = (read_index + 1) % AUDIO_BUFFER_LENGTH;
 	}
 
-	return 1;
+	return 0;
 }
 
 void upsample(uint8_t* in, uint8_t* out) {
@@ -235,7 +235,8 @@ int step(lua_State *L) {
 	}
 
 	// Calculate elapsed time
-	unsigned int ticks = pd->lua->getArgInt(1) * (OSC3_SPEED / 1000);
+	unsigned int ms = pd->lua->getArgInt(1);
+	unsigned int ticks = ms * (OSC3_SPEED / 1000);
 
 	Machine::advance(machine_state, ticks);
 
