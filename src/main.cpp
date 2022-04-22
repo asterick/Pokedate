@@ -191,19 +191,19 @@ int load(lua_State *L) {
 	}
 
 	int size = pd->file->read(fd, machine_state.cartridge, sizeof(machine_state.cartridge));
+	pd->file->close(fd);
+
+	// Copy rom into it's power of two mirrors
 	int stride = 1;
 
 	while (stride < size) stride <<= 1;
-	pd->system->logToConsole("%06x %06x", size, stride);
 
-	int index = stride;
+	size_t index = stride;
 
 	while (index < sizeof(machine_state.cartridge)) {
 		memcpy(&machine_state.cartridge[index], &machine_state.cartridge[0], size);
 		index += stride;
 	}
-
-	pd->file->close(fd);
 
 	cart_inserted = true;
 	return 0;
