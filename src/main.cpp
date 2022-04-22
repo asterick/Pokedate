@@ -35,6 +35,7 @@ static const uint8_t dither[4][4] = {
 };
 
 static int audioSource(void* context, int16_t* samples, int16_t* _, int len) {
+	/*
 	static uint16_t read_index = 0;
 	int write_index = machine_state.audio.write_index;
 
@@ -54,6 +55,21 @@ static int audioSource(void* context, int16_t* samples, int16_t* _, int len) {
 	}
 
 	return 0;
+	*/
+
+	static int wave = 0;
+	for (int i = 0; i < len; i++) {
+		if (wave < 50) {
+			*(samples++) = wave * 0x400 - 0x8000;
+		} else if (wave >= 50) {
+			*(samples++) = (99 - wave) * 0x400 - 0x8000;
+		}
+
+		wave = (wave + 1) % 100;
+	}
+
+
+	return 1;
 }
 
 void upsample(uint8_t* in, uint8_t* out) {
@@ -118,7 +134,6 @@ extern "C" void flip_screen(uint8_t* frame_data) {
 static void initialize(void)
 {
 	// Configure emulator
-	Audio::setSampleRate(machine_state.audio, 44100);
 	last_time = pd->system->getCurrentTimeMilliseconds();
 
 	// Load BIOS image
@@ -139,6 +154,8 @@ static void initialize(void)
 		pd->file->close(fd);
 	}
 
+	// assume sample rate
+	Audio::setSampleRate(machine_state.audio, 44100);
 	Machine::reset(machine_state);
 }
 
@@ -198,6 +215,12 @@ int load(lua_State *L) {
 	}
 
 	cart_inserted = true;
+	return 0;
+}
+
+int setSampleRate(lua_State *L) {
+	pd->system->logToConsole("Sample rate: %i", pd->lua->getArgInt(1));
+	Audio::setSampleRate(machine_state.audio, pd->lua->getArgInt(1));
 	return 0;
 }
 
@@ -262,15 +285,11 @@ int eventHandler(PlaydateAPI* playdate, PDSystemEvent event, uint32_t arg)
 		const char* err;
 
 		playdate->lua->addFunction(step, "minimon.step", &err);
-		if (*err) playdate->system->error("Cannot add function: %s", err);
 		playdate->lua->addFunction(reset, "minimon.reset", &err);
-		if (*err) playdate->system->error("Cannot add function: %s", err);
 		playdate->lua->addFunction(load, "minimon.load", &err);
-		if (*err) playdate->system->error("Cannot add function: %s", err);
 		playdate->lua->addFunction(eject, "minimon.eject", &err);
-		if (*err) playdate->system->error("Cannot add function: %s", err);
 		playdate->lua->addFunction(powerButton, "minimon.powerButton", &err);
-		if (*err) playdate->system->error("Cannot add function: %s", err);
+		playdate->lua->addFunction(setSampleRate, "minimon.setSampleRate", &err);
 
 		break;
 

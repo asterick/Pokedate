@@ -232,4 +232,6 @@ end
 addLoadMenu()
 menu:addMenuItem("Reset", minimon.reset)
 
+print (playdate.sound.getSampleRate() // 1)
+minimon.setSampleRate(playdate.sound.getSampleRate());
 playdate.update = run()
