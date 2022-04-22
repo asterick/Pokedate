@@ -124,6 +124,7 @@ function loadMenu()
 
             repaintBorder()
         else
+            addEjectMenu()
             minimon.load(path)
             playdate.update = run()
         end
@@ -214,7 +215,6 @@ function addLoadMenu()
 
     cartMenuItem = menu:addMenuItem("Load", 1, function (...)
         playdate.update = loadMenu()
-        addEjectMenu()
     end)
 end
 
