@@ -35,7 +35,6 @@ static const uint8_t dither[4][4] = {
 };
 
 static int audioSource(void* context, int16_t* samples, int16_t* _, int len) {
-	/*
 	static uint16_t read_index = 0;
 	int write_index = machine_state.audio.write_index;
 
@@ -53,21 +52,6 @@ static int audioSource(void* context, int16_t* samples, int16_t* _, int len) {
 		*(samples++) = machine_state.audio.output[read_index];
 		read_index = (read_index + 1) % AUDIO_BUFFER_LENGTH;
 	}
-
-	return 0;
-	*/
-
-	static int wave = 0;
-	for (int i = 0; i < len; i++) {
-		if (wave < 50) {
-			*(samples++) = wave * 0x400 - 0x8000;
-		} else if (wave >= 50) {
-			*(samples++) = (99 - wave) * 0x400 - 0x8000;
-		}
-
-		wave = (wave + 1) % 100;
-	}
-
 
 	return 1;
 }
@@ -87,7 +71,6 @@ void upsample(uint8_t* in, uint8_t* out) {
 }
 
 extern "C" void flip_screen(uint8_t* frame_data) {
-
 	// Do a 4 cell box average
 	static uint8_t box[BOX_CELLS][64*96] = { {0} };
 	static uint8_t sum[66][98] = {0};
@@ -155,7 +138,6 @@ static void initialize(void)
 	}
 
 	// assume sample rate
-	Audio::setSampleRate(machine_state.audio, 44100);
 	Machine::reset(machine_state);
 }
 
@@ -258,8 +240,7 @@ int step(lua_State *L) {
 	}
 
 	// Calculate elapsed time
-	unsigned int ms = pd->lua->getArgInt(1);
-	unsigned int ticks = ms * (OSC3_SPEED / 1000);
+	unsigned int ticks = pd->lua->getArgInt(1) * (OSC3_SPEED / 1000);
 
 	Machine::advance(machine_state, ticks);
 

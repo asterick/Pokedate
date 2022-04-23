@@ -54,7 +54,6 @@ function pressPower()
     local update = playdate.update
     local time = playdate.getCurrentTimeMilliseconds() + 1000
 
-    print("True")
     minimon.powerButton(true)
     return function()
         if playdate.getCurrentTimeMilliseconds() >= time then
@@ -232,6 +231,5 @@ end
 addLoadMenu()
 menu:addMenuItem("Reset", minimon.reset)
 
-print (playdate.sound.getSampleRate() // 1)
 minimon.setSampleRate(playdate.sound.getSampleRate());
 playdate.update = run()

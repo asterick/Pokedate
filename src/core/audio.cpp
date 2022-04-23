@@ -25,6 +25,7 @@ void Audio::reset(Audio::State& audio) {
 	audio.enable = 0;
 	audio.volume = 0;
 	audio.write_index = 0;
+	audio.sampleRate = 44100;
 	memset(&audio.output, 0, sizeof(audio.output));
 }
 
